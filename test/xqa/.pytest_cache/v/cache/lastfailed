@@ -1,0 +1,4 @@
+{
+  "perf_test.py::test_perf_complete_e2e": true,
+  "perf_test.py::test_perf_single_env_values": true
+}

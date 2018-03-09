@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 source common.sh
 
 function publish_to_docker_hub() {

@@ -1,20 +1,19 @@
-source common.sh
+#!/usr/bin/env bash
 
-#rm_existing_containers_networks_volumes
+docker stop $(docker ps -a -q) > /dev/null 2>&1
+docker rm $(docker ps -a -q) > /dev/null 2>&1
+docker network prune -f > /dev/null 2>&1
+docker volume prune -f > /dev/null 2>&1
 
+if [[ -z "${POOL_SIZE}" ]]; then
+    POOL_SIZE=2
+fi
 if [[ -z "${SHARDS}" ]]; then
-    SHARDS=4
+    SHARDS=1
 fi
 
+docker-compose -p "dev" -f $1 up -d --scale xqa-shard=$SHARDS
 
-echo $SHARDS
-
-# docker-compose -p "dev"  -f ../docker-compose.dev.yml -f ../docker-compose.dev.shard.yml up -d --scale xqa-shard=$SHARDS 
-# 
-# docker run -d --net="dev_xqa" --name="dev_xqa-ingest_1" -v $HOME/GIT_REPOS/xqa-test-data:/xml xqa-ingest:latest -message_broker_host xqa-message-broker -path /xml
-# 
-# docker network ls
-# docker volume ls
-# docker ps -a
+docker run -d --net="dev_xqa" --name="dev_xqa-ingest_1" -v $HOME/GIT_REPOS/xqa-test-data:/xml xqa-ingest:latest -message_broker_host xqa-message-broker -path /xml
 
 exit $?

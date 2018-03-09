@@ -1,9 +1,11 @@
+#!/usr/bin/env bash
+
 source common.sh
 
-function rm_all_containers_volumes_and_images() {
+function reset_docker_env() {
     echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
     NOW=`date --rfc-3339='ns'`
-    echo ">>> $NOW rm_all_containers_volumes_and_images"
+    echo ">>> $NOW reset_docker_env"
     docker stop $(docker ps -a -q) > /dev/null 2>&1
     docker rm $(docker ps -a -q) > /dev/null 2>&1
     docker volume prune -f > /dev/null 2>&1
@@ -51,7 +53,7 @@ function cadvisor() {
     docker pull google/cadvisor:latest
 }
 
-rm_all_containers_volumes_and_images
+reset_docker_env
 
 angular xqa-query-ui
 cadvisor

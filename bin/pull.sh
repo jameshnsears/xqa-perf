@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 docker pull jameshnsears/xqa-db
 docker pull jameshnsears/xqa-db-amqp
 docker pull jameshnsears/xqa-db-rest

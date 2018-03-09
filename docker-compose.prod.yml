@@ -56,6 +56,14 @@ services:
 #    depends_on:
 #      - xqa-message-broker
 
+  xqa-shard:
+    image: jameshnsears/xqa-shard:latest
+    command: ["-message_broker_host", "xqa-message-broker"]
+    networks:
+      - xqa
+    depends_on:
+      - xqa-message-broker
+
   xqa-query-ui:
     image: jameshnsears/xqa-query-ui:latest
     ports:
