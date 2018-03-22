@@ -37,7 +37,7 @@ The graphs reveal that xqa is most performant when the # of ingest-balancer thre
 Assuming [requirements.txt](requirements.txt) installed:
 
 * export PYTHONPATH=$HOME/GIT_REPOS/xqa-perf/src:$HOME/GIT_REPOS/xqa-perf/test
-* cd ~/GIT_REPOS/xqa-perf/
+* cd ~/GIT_REPOS/xqa-perf
 * pytest -s
 
 ### 2.1. Sample output:
