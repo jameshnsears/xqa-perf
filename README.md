@@ -1,6 +1,7 @@
 # xqa-perf [![Build Status](https://travis-ci.org/jameshnsears/xqa-perf.svg?branch=master)](https://travis-ci.org/jameshnsears/xqa-perf) 
 * end to end performance metrics.
-* See .travis.yml for a simple end to end test.
+* see .travis.yml for a simple end to end test.
+* run bin/e2e.sh to build a local end to end environment (assumes bin/build.sh run and xqa-test-data cloned).
 
 ## 1. Introduction
 xqa-perf is a unit test - [test/xqa/perf_test.py](test/xqa/perf_test.py) - that easily, and reliably, demonstrates the core (ingest to shard) end to end performance of xqa.
