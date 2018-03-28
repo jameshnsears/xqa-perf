@@ -19,17 +19,6 @@ services:
       - xqa-db
       - xqa-message-broker
 
-#  xqa-db-rest:
-#    image: jameshnsears/xqa-db-rest:latest
-#    command: ["-storage_host", "xqa-db"]
-#    ports:
-#      - "8080:8080"
-#      - "8081:8081"
-#    networks:
-#      - xqa
-#    depends_on:
-#      - xqa-db
-
   xqa-ingest-balancer:
     image: jameshnsears/xqa-ingest-balancer:latest
     command: ["-message_broker_host", "xqa-message-broker", "-pool_size", "2"]
