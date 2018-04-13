@@ -14,9 +14,13 @@ def stats_db_fixture():
     cursor.execute('''
         CREATE TABLE stats (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            pool_size INTEGER NOT NULL, shards INTEGER NOT NULL,
-            ingest_count INTEGER NOT NULL, ingest_size INTEGER NOT NULL,
-            time_ingest INTEGER NOT NULL, time_ingest_balancer INTEGER NOT NULL, time_shard INTEGER NOT NULL)
+            pool_size INTEGER NOT NULL,
+            shards INTEGER NOT NULL,
+            ingest_count INTEGER NOT NULL,
+            ingest_size INTEGER NOT NULL,
+            time_ingest INTEGER NOT NULL,
+            time_ingest_balancer INTEGER NOT NULL,
+            time_shard INTEGER NOT NULL)
     ''')
     stats_db.commit()
 
@@ -37,7 +41,7 @@ def test_png_produced_as_expected(stats_db_fixture: sqlite3.Connection, tmpdir):
         path.abspath(path.join(path.dirname(__file__), '../resources/3_1-2-3-4.png')), 'rb').read()
 
 
-def test_perf_single_e2e(stats_db_fixture: sqlite3.Connection, tmpdir):
+def _test_perf_single_e2e(stats_db_fixture: sqlite3.Connection, tmpdir):
     pool_size = 3
     shards = 1
     run_e2e_test(stats_db_fixture, 4, 1)
@@ -47,7 +51,8 @@ def test_perf_single_e2e(stats_db_fixture: sqlite3.Connection, tmpdir):
 
 
 def test_perf_complete_e2e(stats_db_fixture: sqlite3.Connection):
-    for pool_size in range(1, multiprocessing.cpu_count() + 2):
+    for pool_size in range(3, 4):
+    #for pool_size in range(1, multiprocessing.cpu_count() + 2):
         for shards in range(1, multiprocessing.cpu_count() + 2):
             run_e2e_test(stats_db_fixture, pool_size, shards)
 

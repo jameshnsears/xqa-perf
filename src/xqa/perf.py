@@ -93,6 +93,7 @@ def make_png(e2e_stats: List, location_to_save_chart):
         ingest.append(row[4])
         ingest_balancer.append(row[5])
         shard.append(row[6])
+        logging.info(row)
 
     plt.plot(number_of_shards, ingest, marker='x', color='red', label='ingest')
     plt.plot(number_of_shards, ingest_balancer, marker='x', color='grey', label='ingest-balancer')
