@@ -1,47 +1,50 @@
 # xqa-perf [![Build Status](https://travis-ci.org/jameshnsears/xqa-perf.svg?branch=master)](https://travis-ci.org/jameshnsears/xqa-perf) 
 * end to end performance metrics.
-* see .travis.yml for a simple end to end test.
-* run bin/e2e.sh to build a local end to end environment (assumes bin/build.sh run and xqa-test-data cloned).
+* see .travis.yml for a simple end to end test - ingest -> ingest-balancer -> shard.
+* run [bin/e2e.sh](bin/e2e.sh) to build a local end to end environment (assumes bin/build.sh run and xqa-test-data cloned beforehand).
 
 ## 1. Introduction
-xqa-perf is a unit test - [test/xqa/perf_test.py](test/xqa/perf_test.py) - that easily, and reliably, demonstrates the core (ingest to shard) end to end performance of xqa.
+xqa-perf is composed of two things:
+* an easy to change a unit test - [test/xqa/perf_test.py](test/xqa/perf_test.py) - that reliably demonstrates the end to end performance of xqa.
+* a set of bash scripts - [bin](bin) - that can be used standalone to help provision / publish the container based environment.
 
-The unit test involes multiple setup and teardown of containers, each involving multiple ingest-balancer threads and shards: it is a long running test that is very CPU intensive.
+### 1.1. The Unit Test
+The unit test involes multiple setup and teardown of containers, each with multiple ingest-balancer threads and shards: it is a long running test that is very CPU intensive.
 
 Throughout the test statistics are kept and, at various intervals, graphs are output into [test_results](test_results) (see below).
 
-### 1.1. Environment
+## 2. Test Environment
 * CentOS 7 VM, running on a SSD with 10GB of RAM.
 * 4 CPU cores.
 * xqa-test-data - 40 XML files, ranging in size between 829 bytes and 14 MB.
 * Host + Guest OS's in an idle state.
 
-### 1.2. Test Result Graphs
+## 3. Test Result Graphs
 The graphs reveal that xqa is most performant when the # of ingest-balancer threads is  +1 more than the # of cores and the # of shards is -1 the # of cores.
 
-#### 1.2.1. Test Run: 1 ingest thread; 1 to 5 shards
+### 3.1. Test Run: 1 ingest thread; 1 to 5 shards
 ![Test A](test_results/1_5.png)
 
-#### 1.2.2. Test Run: 2 ingest threads; 1 to 5 shards
+### 3.2. Test Run: 2 ingest threads; 1 to 5 shards
 ![Test B](test_results/2_5.png)
 
-#### 1.2.3. Test Run: 3 ingest threads; 1 to 5 shards
+### 3.3. Test Run: 3 ingest threads; 1 to 5 shards
 ![Test B](test_results/3_5.png)
 
-#### 1.2.4. Test Run: 4 ingest threads; 1 to 5 shards
+### 3.4. Test Run: 4 ingest threads; 1 to 5 shards
 ![Test B](test_results/4_5.png)
 
-#### 1.2.5. Test Run: 5 ingest threads; 1 to 5 shards
+### 3.5. Test Run: 5 ingest threads; 1 to 5 shards
 ![Test B](test_results/5_5.png)
 
-## 2. Example Usage
+## 4. Example Usage
 Assuming [requirements.txt](requirements.txt) installed:
 
 * export PYTHONPATH=$HOME/GIT_REPOS/xqa-perf/src:$HOME/GIT_REPOS/xqa-perf/test
 * cd ~/GIT_REPOS/xqa-perf
 * pytest -s
 
-### 2.1. Sample output:
+### 4.1. Sample output:
 
 ~~~~
 ============================= test session starts ==============================
