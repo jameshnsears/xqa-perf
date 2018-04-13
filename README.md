@@ -14,6 +14,8 @@ The unit test involes multiple setup and teardown of containers, each with multi
 Throughout the test statistics are kept and, at various intervals, graphs are output into [test_results](test_results) (see below).
 
 ### 1.2. e2e.sh - standlone environment
+With bin/build.sh run and xqa-test-data cloned.
+
 ~~~~
 ./e2e.sh 
 
@@ -22,7 +24,6 @@ docker logs dev_xqa-ingest_1 | grep "FINISHED - sent: 40/40"
 docker logs dev_xqa-ingest-balancer_1 | grep "xqa.shard.insert." | grep "<" | wc -l
 
 docker logs dev_xqa-shard_1 | grep "insert" | wc -l
-
 ~~~~
 
 ## 2. Test Environment
