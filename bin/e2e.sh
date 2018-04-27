@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
-docker stop $(docker ps -a -q) > /dev/null 2>&1
-docker rm $(docker ps -a -q) > /dev/null 2>&1
-docker network prune -f > /dev/null 2>&1
-docker volume prune -f > /dev/null 2>&1
+source ./common.sh
+
+reset_docker_env
 
 if [ -z "$1" ]; then
     YML="../docker-compose.dev.yml"
