@@ -19,5 +19,5 @@ script:
   - docker run -d --net="prod_xqa" --name="prod_xqa-ingest_1" -v /home/travis/build/jameshnsears/xqa-test-data:/xml jameshnsears/xqa-ingest:latest -message_broker_host xqa-message-broker -path /xml
   - sleep 180
 
-  - docker logs dev_xqa-shard_1 > xqa-shard_1.log
+  - docker logs prod_xqa-shard_1 > xqa-shard_1.log
   - grep "size=40" xqa-shard_1.log
