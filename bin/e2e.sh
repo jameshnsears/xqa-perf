@@ -13,7 +13,7 @@ if [[ -z "${POOL_SIZE}" ]]; then
     POOL_SIZE=2
 fi
 if [[ -z "${SHARDS}" ]]; then
-    SHARDS=1
+    SHARDS=2
 fi
 
 docker-compose -p "dev" -f $YML up -d --scale xqa-shard=$SHARDS
