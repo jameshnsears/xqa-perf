@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-source ./common.sh
+source common.sh
 
-reset_docker_env
+reset_container_env
 
 if [ -z "$1" ]; then
     YML="../docker-compose.dev.yml"

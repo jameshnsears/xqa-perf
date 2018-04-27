@@ -23,7 +23,7 @@ function clone_git_repo() {
     git clone https://github.com/jameshnsears/$1 $BLD_DIR/$1
 }
 
-function reset_docker_env() {
+function reset_container_env() {
     docker stop $(docker ps -a -q) > /dev/null 2>&1
     docker rm $(docker ps -a -q) > /dev/null 2>&1
     docker network prune -f > /dev/null 2>&1

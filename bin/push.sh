@@ -14,9 +14,9 @@ function publish_to_docker_hub() {
 
 publish_to_docker_hub xqa-db
 publish_to_docker_hub xqa-db-amqp
-publish_to_docker_hub xqa-elk-elasticsearch
-publish_to_docker_hub xqa-elk-kibana
-publish_to_docker_hub xqa-elk-logstash
+# publish_to_docker_hub xqa-elk-elasticsearch
+# publish_to_docker_hub xqa-elk-kibana
+# publish_to_docker_hub xqa-elk-logstash
 publish_to_docker_hub xqa-ingest
 publish_to_docker_hub xqa-ingest-balancer
 publish_to_docker_hub xqa-message-broker

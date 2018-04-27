@@ -21,9 +21,7 @@ services:
 
   xqa-ingest-balancer:
     image: xqa-ingest-balancer:latest
-    command: ["-message_broker_host", "xqa-message-broker"]
-    environment:
-      - POOL_SIZE
+    command: ["-message_broker_host", "xqa-message-broker", "-pool_size", "2"]
     networks:
       - xqa
     depends_on:
@@ -38,6 +36,23 @@ services:
       - "xqa-message-broker:/opt/apache-activemq-5.15.3/data"
     networks:
       - xqa
+
+  xqa-query-ui:
+    image: xqa-query-ui:latest
+    ports:
+      - "80:80"
+    networks:
+      - xqa
+    depends_on:
+      - xqa-query-balancer
+
+  xqa-query-balancer:
+    image: xqa-query-balancer:latest
+    networks:
+      - xqa
+    depends_on:
+      - xqa-db
+      - xqa-message-broker
 
   xqa-shard:
     image: xqa-shard:latest

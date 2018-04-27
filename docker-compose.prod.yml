@@ -37,13 +37,22 @@ services:
     networks:
       - xqa
 
-#  xqa-query-balancer:
-#    image: jameshnsears/xqa-query-balancer:latest
-#    command: ["-message_broker_host", "xqa-message-broker"]
-#    networks:
-#      - xqa
-#    depends_on:
-#      - xqa-message-broker
+  xqa-query-ui:
+    image: jameshnsears/xqa-query-ui:latest
+    ports:
+      - "80:80"
+    networks:
+      - xqa
+    depends_on:
+      - xqa-query-balancer
+
+  xqa-query-balancer:
+    image: jameshnsears/xqa-query-balancer:latest
+    networks:
+      - xqa
+    depends_on:
+      - xqa-db
+      - xqa-message-broker
 
   xqa-shard:
     image: jameshnsears/xqa-shard:latest
@@ -52,13 +61,6 @@ services:
       - xqa
     depends_on:
       - xqa-message-broker
-
-  xqa-query-ui:
-    image: jameshnsears/xqa-query-ui:latest
-    ports:
-      - "80:80"
-    networks:
-      - xqa
 
 volumes:
   xqa-db:
