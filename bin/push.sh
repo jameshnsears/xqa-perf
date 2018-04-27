@@ -7,16 +7,18 @@ function publish_to_docker_hub() {
     NOW=`date --rfc-3339='ns'`
     echo ">>> $NOW publish_to_docker_hub $1"
     docker tag $1 jameshnsears/$1
-    docker login -u jameshnsears
     docker push jameshnsears/$1:latest
     docker rmi jameshnsears/$1:latest
 }
 
+# one time password request / login
+docker login -u jameshnsears
+
 publish_to_docker_hub xqa-db
 publish_to_docker_hub xqa-db-amqp
-# publish_to_docker_hub xqa-elk-elasticsearch
-# publish_to_docker_hub xqa-elk-kibana
-# publish_to_docker_hub xqa-elk-logstash
+publish_to_docker_hub xqa-elk-elasticsearch
+publish_to_docker_hub xqa-elk-kibana
+publish_to_docker_hub xqa-elk-logstash
 publish_to_docker_hub xqa-ingest
 publish_to_docker_hub xqa-ingest-balancer
 publish_to_docker_hub xqa-message-broker

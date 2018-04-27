@@ -53,17 +53,17 @@ function cadvisor() {
     docker pull google/cadvisor:latest
 }
 
-# reset_docker_env
+reset_docker_env
 
-# angular xqa-query-ui
-# cadvisor
-# docker_compose_build xqa-db
-# docker_compose_build xqa-db-amqp
-# docker_compose_build xqa-elk
-# mvn_docker_compose_build xqa-ingest
-# mvn_docker_compose_build xqa-ingest-balancer
+angular xqa-query-ui
+cadvisor
+docker_compose_build xqa-db
+docker_compose_build xqa-db-amqp
+docker_compose_build xqa-elk
+mvn_docker_compose_build xqa-ingest
+mvn_docker_compose_build xqa-ingest-balancer
 mvn_docker_compose_build xqa-query-balancer
-# docker_compose_build xqa-message-broker
-# docker_compose_build xqa-shard
+docker_compose_build xqa-message-broker
+docker_compose_build xqa-shard
 
 exit $?
