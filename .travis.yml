@@ -7,7 +7,6 @@ services:
   - docker
 
 cache: 
-  - pip
   directories:
   - $HOME/.m2
 
