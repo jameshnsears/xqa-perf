@@ -57,7 +57,7 @@ function cadvisor() {
     docker pull google/cadvisor:latest
 }
 
-if [ "$TRAVIS-CI" = "" ]; then
+if [[ -z "${TRAVISCI}" ]]; then
     reset_docker_env
     cadvisor
 fi

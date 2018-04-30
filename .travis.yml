@@ -7,7 +7,7 @@ services:
   - docker
 
 env:
-  - TRAVIS-CI=1
+  - TRAVISCI=1
 
 before_script:
   - sudo service postgresql stop
