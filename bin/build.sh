@@ -53,10 +53,12 @@ function cadvisor() {
     docker pull google/cadvisor:latest
 }
 
-reset_docker_env
+if [ "$TRAVIS-CI" = "" ]; then
+    reset_docker_env
+    angular xqa-query-ui
+    cadvisor
+fi
 
-angular xqa-query-ui
-cadvisor
 docker_compose_build xqa-db
 docker_compose_build xqa-db-amqp
 docker_compose_build xqa-elk
