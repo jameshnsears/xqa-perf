@@ -11,9 +11,12 @@ before_script:
   - while sudo lsof -Pi :5432 -sTCP:LISTEN -t; do sleep 1; done
 
 script:
-  - pwd
-  - ./bin/build.sh
+  - cd bin
+  - ./build.sh
+  - cd ..
+
   - docker images
+
 
   # - docker-compose -p "dev" -f docker-compose.dev.yml up -d
 
