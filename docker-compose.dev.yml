@@ -60,6 +60,8 @@ services:
   xqa-shard:
     image: xqa-shard:latest
     command: ["-message_broker_host", "xqa-message-broker"]
+    ports:
+      - 1984
     networks:
       - xqa
     depends_on:
