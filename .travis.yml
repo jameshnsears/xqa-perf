@@ -28,12 +28,15 @@ script:
 
   - git clone https://github.com/jameshnsears/xqa-test-data
   - rm -rf xqa-test-data/cho_* xqa-test-data/eapb_* xqa-test-data/INDA*
-  - docker run -d --net="dev_xqa" --name="dev_xqa-ingest_1" -v /home/travis/build/jameshnsears/xqa-test-data:/xml xqa-ingest:latest -message_broker_host xqa-message-broker -path /xml
-  
-  - sleep 10
+  - docker run -d --net="dev" --name="dev_xqa-ingest_1" -v /home/travis/build/jameshnsears/xqa-test-data:/xml xqa-ingest:latest -message_broker_host xqa-message-broker -path /xml
+
   - docker ps -a
-  - sleep 50
+  - sleep 60
 
   - docker logs dev_xqa-shard_1 > xqa-shard_1.log
-  - cat xqa-shard_1.log
+
+  - docker logs dev_xqa-ingest_1
+  - docker logs dev_xqa-message-broker_1
+  - docker logs dev_xqa-shard_1
+
   - grep "size=10" xqa-shard_1.log

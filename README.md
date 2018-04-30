@@ -1,6 +1,6 @@
 # xqa-perf [![Build Status](https://travis-ci.org/jameshnsears/xqa-perf.svg?branch=master)](https://travis-ci.org/jameshnsears/xqa-perf) 
 * end to end performance metrics.
-* see .travis.yml for a simple end to end test - ingest -> ingest-balancer -> shard.
+* see .travis.yml for a simple end to end test - build all containers from source; then: ingest -> ingest-balancer -> shard.
 * run [bin/e2e.sh](bin/e2e.sh) to build a local end to end environment (assumes bin/build.sh run and xqa-test-data cloned beforehand).
 
 ## 1. Introduction
