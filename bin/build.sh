@@ -55,10 +55,10 @@ function cadvisor() {
 
 if [ "$TRAVIS-CI" = "" ]; then
     reset_docker_env
-    angular xqa-query-ui
     cadvisor
 fi
 
+angular xqa-query-ui
 docker_compose_build xqa-db
 docker_compose_build xqa-db-amqp
 docker_compose_build xqa-elk
