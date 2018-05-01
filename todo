@@ -1,0 +1,21 @@
+Install docker + docker-compose 
+
+
+ideally install pre-requisites seperately in ~/bin/xqa/
+apache-maven-3.5.3-bin.tar.gz
+node-v8.11.1-linux-x64.tar.xz
+jdk-8u171-linux-x64.tar.gz
+and use them to build
+
+git clone https://github.com/jameshnsears/xqa-perf
+
+cd xqa-perf/bin
+./build.sh
+docker images
+
+--
+
+docker-compose -f docker-compose.dev.yml -p "dev" up -d --scale xqa-shard=20
+
+<pre><font color="#C4A000">WARNING</font>: Connection pool is full, discarding connection: localhost
+</pre>

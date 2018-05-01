@@ -10,14 +10,14 @@ function create_network() {
 }
 
 function create_build_dir() {
-    if [ -d "$BLD_DIR" ]; then
-        rm -rf $BLD_DIR
+    if [ -d "$BLD_DIR/$1" ]; then
+        rm -rf $BLD_DIR/$1
     fi
     mkdir $BLD_DIR
 }
 
 function clone_git_repo() {
-    create_build_dir
+    create_build_dir $1
     NOW=`date --rfc-3339='ns'`
     echo ">>> $NOW clone_git_repo"
     git clone https://github.com/jameshnsears/$1 $BLD_DIR/$1
