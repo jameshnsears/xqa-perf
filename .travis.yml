@@ -40,6 +40,6 @@ script:
 
   - docker logs dev_xqa-ingest_1
   - docker logs dev_xqa-shard_1 > xqa-shard_1.log
-  - more xqa-shard_1.log
+  - cat xqa-shard_1.log
 
   - grep "size=10" xqa-shard_1.log
