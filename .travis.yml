@@ -30,7 +30,7 @@ script:
 
   - cd ..
   - git clone https://github.com/jameshnsears/xqa-test-data
-  - docker run -d --net="prod_xqa" --name="prod_xqa-ingest_1" -v /home/travis/build/jameshnsears/xqa-test-data:/xml xqa-ingest:latest -message_broker_host xqa-message-broker -path /xml
+  - docker run -d --net="dev_xqa" --name="dev_xqa-ingest_1" -v /home/travis/build/jameshnsears/xqa-test-data:/xml xqa-ingest:latest -message_broker_host xqa-message-broker -path /xml
 
   - sleep 120
 
