@@ -24,13 +24,12 @@ script:
 
   - docker images
 
-  - docker-compose -p "dev" -f docker-compose.dev.yml up -d xqa-message-broker xqa-db
+  - docker-compose -p "dev" -f docker-compose.dev.yml up -d
   - sleep 10
-  - docker-compose -p "dev" -f docker-compose.dev.yml up -d xqa-db-amqp xqa-ingest-balancer xqa-query-ui xqa-query-balancer xqa-shard
 
   - git clone https://github.com/jameshnsears/xqa-test-data
   - rm -rf xqa-test-data/cho_* xqa-test-data/eapb_* xqa-test-data/INDA*
-  - docker run -d --net="dev" --name="dev_xqa-ingest_1" -v /home/travis/build/jameshnsears/xqa-test-data:/xml xqa-ingest:latest -message_broker_host xqa-message-broker -path /xml
+  - docker run -d --net="dev_xqa" --name="dev_xqa-ingest_1" -v /home/travis/build/jameshnsears/xqa-test-data:/xml xqa-ingest:latest -message_broker_host xqa-message-broker -path /xml
 
   - docker ps -a
   - sleep 60
