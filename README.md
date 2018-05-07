@@ -15,10 +15,13 @@ The unit test, which you run manually, involes multiple setup and teardown of co
 #### 1.1.1. Usage
 Assuming [requirements.txt](requirements.txt) installed; bin/build.sh run and xqa-test-data cloned.
 
-* export PYTHONPATH=$HOME/GIT_REPOS/xqa-perf/src:$HOME/GIT_REPOS/xqa-perf/test
-* export PATH=$HOME/GIT_REPOS/xqa-perf/bin:$PATH
-* cd $HOME/GIT_REPOS/xqa-perf
-* pytest -s
+```
+DEVPATH=$HOME/GIT_REPOS
+PYTHONPATH=$DEVPATH/xqa-perf/src:$DEVPATH/xqa-perf/test:$PYTHONPATH
+PATH=$DEVPATH/xqa-perf/bin:$PATH
+cd $DEVPATH/xqa-perf
+pytest -s
+```
 
 ### 1.2. Bash Scripts
 * Run [bin/e2e.sh](bin/e2e.sh) to build a local end to end environment.
