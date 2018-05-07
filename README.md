@@ -17,7 +17,7 @@ Assuming [requirements.txt](requirements.txt) installed; bin/build.sh run and xq
 export DEVPATH=$HOME/GIT_REPOS
 export PYTHONPATH=$DEVPATH/xqa-perf/src:$DEVPATH/xqa-perf/test:$PYTHONPATH
 export PATH=$DEVPATH/xqa-perf/bin:$PATH
-cd $DEVPATH/xqa-perfgi
+cd $DEVPATH/xqa-perf
 pytest -s
 ```
 
