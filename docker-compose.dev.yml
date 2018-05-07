@@ -36,7 +36,6 @@ services:
     networks:
       - xqa
     depends_on:
-      - xqa-db
       - xqa-message-broker
 
   xqa-shard:
@@ -50,7 +49,6 @@ services:
       - xqa-message-broker
 
 volumes:
-  xqa-db:
   xqa-message-broker:
 
 networks:
