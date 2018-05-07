@@ -22,15 +22,15 @@ before_script:
   - cd ..
 
 script:
-  - docker-compose -p "prod" -f docker-compose.dev.yml up -d xqa-message-broker
+  - docker-compose -p "dev" -f docker-compose.dev.yml up -d xqa-message-broker
 
-  - docker-compose -p "prod" -f docker-compose.dev.yml up -d --scale xqa-shard=1
+  - docker-compose -p "dev" -f docker-compose.dev.yml up -d --scale xqa-shard=1
 
   - docker images
 
   - cd ..
   - git clone https://github.com/jameshnsears/xqa-test-data
-  - docker run -d --net="dev_xqa" --name="dev_xqa-ingest_1" -v /home/travis/build/jameshnsears/xqa-test-data:/xml xqa-ingest:latest -message_broker_host xqa-message-broker -path /xml
+  - docker run -d --net="prod_xqa" --name="prod_xqa-ingest_1" -v /home/travis/build/jameshnsears/xqa-test-data:/xml xqa-ingest:latest -message_broker_host xqa-message-broker -path /xml
 
   - sleep 120
 
