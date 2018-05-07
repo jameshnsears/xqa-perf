@@ -54,7 +54,7 @@ def _wait_for_service_to_complete(stage: str):
     sleep_attempts = 1
 
     while _query_db_for_count(sql_queries.count_items % stage) != test_data_items:
-        logging.debug('%s=%d' % (stage, sleep_attempts))
+        logging.info('%s=%d' % (stage, sleep_attempts))
         time.sleep(sleep_attempts)
 
         if sleep_attempts > test_data_items:
