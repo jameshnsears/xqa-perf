@@ -26,19 +26,17 @@ script:
 
   - docker-compose -p "dev" -f docker-compose.dev.yml up -d --scale xqa-shard=1
 
-  - docker images
-
   - cd ..
   - git clone https://github.com/jameshnsears/xqa-test-data
   - docker run -d --net="dev_xqa" --name="dev_xqa-ingest_1" -v /home/travis/build/jameshnsears/xqa-test-data:/xml xqa-ingest:latest -message_broker_host xqa-message-broker -path /xml
 
   - sleep 120
 
-  - docker ps -a
-
   - docker logs dev_xqa-shard_1 | grep "size=40"
 
 after_failure:
+  - docker images
+  - docker ps -a
   - docker logs dev_xqa-ingest_1
   - docker logs dev_xqa-message-broker_1
   - docker logs dev_xqa-ingest-balancer_1
