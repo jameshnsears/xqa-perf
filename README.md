@@ -16,6 +16,7 @@ The unit test, which you run manually, involes multiple setup and teardown of co
 Assuming [requirements.txt](requirements.txt) installed; bin/build.sh run and xqa-test-data cloned.
 
 * export PYTHONPATH=$HOME/GIT_REPOS/xqa-perf/src:$HOME/GIT_REPOS/xqa-perf/test
+* export PATH=$HOME/GIT_REPOS/xqa-perf/bin:$PATH
 * cd $HOME/GIT_REPOS/xqa-perf
 * pytest -s
 
