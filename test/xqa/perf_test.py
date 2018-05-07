@@ -62,8 +62,8 @@ def test_perf_complete_e2e(stats_db_fixture: sqlite3.Connection):
                                                                                       pool_size,
                                                                                       multiprocessing.cpu_count() + 1))))
             truncate_e2e_stats(stats_db_fixture)
-    except Exception as e:
-        logging.error(e)
+    except Exception:
+        logging.error('unable to complete test')
 
 
 def run_e2e_test(stats_db_fixture: sqlite3.Connection, pool_size: int, shards: int):
