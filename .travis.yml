@@ -19,7 +19,7 @@ before_script:
 
 script:
   - cd bin
-  - ./build-perf.sh
+  - ./build.sh
   - cd ..
 
   - docker images
