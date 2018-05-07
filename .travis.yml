@@ -27,17 +27,18 @@ script:
   - docker-compose -p "dev" -f docker-compose.dev.yml up -d
   - sleep 10
 
+  - cd ..
   - git clone https://github.com/jameshnsears/xqa-test-data
   - rm -rf xqa-test-data/cho_* xqa-test-data/eapb_* xqa-test-data/INDA*
+  - pwd
+
   - docker run -d --net="dev_xqa" --name="dev_xqa-ingest_1" -v /home/travis/build/jameshnsears/xqa-test-data:/xml xqa-ingest:latest -message_broker_host xqa-message-broker -path /xml
 
   - docker ps -a
   - sleep 60
 
+  - docker logs dev_xqa_ingest_1
   - docker logs dev_xqa-shard_1 > xqa-shard_1.log
-
-  - docker logs dev_xqa-ingest_1
-  - docker logs dev_xqa-message-broker_1
-  - docker logs dev_xqa-shard_1
+  - more xqa-shard_1.log
 
   - grep "size=10" xqa-shard_1.log
