@@ -15,8 +15,8 @@ The unit test, which you run manually, involes multiple setup and teardown of co
 #### 1.1.1. Usage
 Assuming [requirements.txt](requirements.txt) installed; bin/build.sh run and xqa-test-data cloned.
 
-* export PYTHONPATH=$HOME/xqa-perf/src:$HOME/xqa-perf/test
-* cd $HOME/xqa-perf
+* export PYTHONPATH=$HOME/GIT_REPOS/xqa-perf/src:$HOME/GIT_REPOS/xqa-perf/test
+* cd $HOME/GIT_REPOS/xqa-perf
 * pytest -s
 
 ### 1.2. Bash Scripts
