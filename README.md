@@ -4,10 +4,8 @@
 
 ## 1. Introduction
 xqa-perf is composed of two parts:
-* a python **Unit Test** - [test/xqa/perf_test.py](test/xqa/perf_test.py) - that matplotlib's end to end performance of xqa.
+* a python **Unit Test** - [test/xqa/perf_test.py](test/xqa/perf_test.py) - that matplotlib's end to end performance of xqa using the xqa-test-data.
 * a set of **bash Scripts** - [bin](bin) called by the unit test but that can also be used standalone to provision / publish the containers.
-
-NOTE: both parts require that xqa-test-data is cloned.
 
 ### 1.1. Unit Test
 The unit test, which you run manually, involes multiple setup and teardown of containers, each with varying ingest-balancer threads and shards: it is a long running test that is very CPU intensive. Throughout the test statistics are kept and, at various intervals, graphs are output into [test_results](test_results) (see below).
@@ -16,10 +14,10 @@ The unit test, which you run manually, involes multiple setup and teardown of co
 Assuming [requirements.txt](requirements.txt) installed; bin/build.sh run and xqa-test-data cloned.
 
 ```
-DEVPATH=$HOME/GIT_REPOS
-PYTHONPATH=$DEVPATH/xqa-perf/src:$DEVPATH/xqa-perf/test:$PYTHONPATH
-PATH=$DEVPATH/xqa-perf/bin:$PATH
-cd $DEVPATH/xqa-perf
+export DEVPATH=$HOME/GIT_REPOS
+export PYTHONPATH=$DEVPATH/xqa-perf/src:$DEVPATH/xqa-perf/test:$PYTHONPATH
+export PATH=$DEVPATH/xqa-perf/bin:$PATH
+cd $DEVPATH/xqa-perfgi
 pytest -s
 ```
 

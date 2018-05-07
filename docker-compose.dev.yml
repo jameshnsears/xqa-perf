@@ -1,6 +1,24 @@
 version: '3'
 
 services:
+  xqa-db:
+    image: xqa-db:latest
+    volumes:
+      - "xqa-db:/var/lib/postgresql"
+    ports:
+      - "5432:5432"
+    networks:
+      - xqa
+
+  xqa-db-amqp:
+    image: xqa-db-amqp:latest
+    command: ["-message_broker_host", "xqa-message-broker", "-storage_host", "xqa-db"]
+    networks:
+      - xqa
+    depends_on:
+      - xqa-db
+      - xqa-message-broker
+
   xqa-ingest-balancer:
     image: xqa-ingest-balancer:latest
     command: ["-message_broker_host", "xqa-message-broker", "-pool_size", "2"]
@@ -30,6 +48,7 @@ services:
       - xqa-message-broker
 
 volumes:
+  xqa-db:
   xqa-message-broker:
 
 networks:

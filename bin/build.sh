@@ -61,12 +61,12 @@ if [[ -z "${TRAVISCI}" ]]; then
     reset_docker_env
     cadvisor
     docker_compose_build xqa-elk
-    docker_compose_build xqa-db
-    docker_compose_build xqa-db-amqp
     angular xqa-query-ui
     mvn_docker_compose_build xqa-query-balancer
 fi
 
+docker_compose_build xqa-db
+docker_compose_build xqa-db-amqp
 mvn_docker_compose_build xqa-ingest
 mvn_docker_compose_build xqa-ingest-balancer
 docker_compose_build xqa-message-broker
