@@ -19,25 +19,6 @@ services:
     networks:
       - xqa
 
-  xqa-query-ui:
-    image: xqa-query-ui:latest
-    ports:
-      - "80:80"
-    networks:
-      - xqa
-    depends_on:
-      - xqa-query-balancer
-
-  xqa-query-balancer:
-    image: xqa-query-balancer:latest
-    ports:
-      - "8080:8080"
-      - "8081:8081"
-    networks:
-      - xqa
-    depends_on:
-      - xqa-message-broker
-
   xqa-shard:
     image: xqa-shard:latest
     command: ["-message_broker_host", "xqa-message-broker"]

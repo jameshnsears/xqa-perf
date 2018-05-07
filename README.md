@@ -1,40 +1,33 @@
 # xqa-perf [![Build Status](https://travis-ci.org/jameshnsears/xqa-perf.svg?branch=master)](https://travis-ci.org/jameshnsears/xqa-perf) 
-* end to end performance metrics.
-* see .travis.yml for a simple end to end test - build all containers from source; then: ingest -> ingest-balancer -> shard.
-* run [bin/e2e.sh](bin/e2e.sh) to build a local end to end environment (assumes bin/build.sh run and xqa-test-data cloned beforehand).
+* end to end performance metrics / environment construction.
+    * .travis.yml shows a simple end to end test, using containers build from source.
 
 ## 1. Introduction
-xqa-perf is composed of two things:
-* an easy to change a unit test - [test/xqa/perf_test.py](test/xqa/perf_test.py) - that reliably demonstrates the end to end performance of xqa.
-* a set of bash scripts - [bin](bin) called by the unit test but that can also be used standalone to help provision / publish the containers.
+xqa-perf is composed of two parts:
+* a python **Unit Test** - [test/xqa/perf_test.py](test/xqa/perf_test.py) - that matplotlib's end to end performance of xqa.
+* a set of **bash Scripts** - [bin](bin) called by the unit test but that can also be used standalone to provision / publish the containers.
 
-### 1.1. The Unit Test
-The unit test involes multiple setup and teardown of containers, each with multiple ingest-balancer threads and shards: it is a long running test that is very CPU intensive.
+NOTE: both parts require that xqa-test-data is cloned.
 
-Throughout the test statistics are kept and, at various intervals, graphs are output into [test_results](test_results) (see below).
+### 1.1. Unit Test
+The unit test, which you run manually, involes multiple setup and teardown of containers, each with varying ingest-balancer threads and shards: it is a long running test that is very CPU intensive. Throughout the test statistics are kept and, at various intervals, graphs are output into [test_results](test_results) (see below).
 
-### 1.2. e2e.sh - standlone environment
-With bin/build.sh run and xqa-test-data cloned.
+#### 1.1.1. Usage
+Assuming [requirements.txt](requirements.txt) installed; bin/build.sh run and xqa-test-data cloned.
 
-~~~~
-$ ./e2e.sh 
+* export PYTHONPATH=$HOME/xqa-perf/src:$HOME/xqa-perf/test
+* cd $HOME/xqa-perf
+* pytest -s
 
-$ docker logs dev_xqa-ingest_1 | grep "FINISHED - sent: 40/40"
-
-$ docker logs dev_xqa-ingest-balancer_1 | grep "xqa.shard.insert." | grep "<" | wc -l
-40
-
-$ docker logs dev_xqa-shard_1 | grep "insert" | wc -l
-40
-~~~~
+### 1.2. Bash Scripts
+* Run [bin/e2e.sh](bin/e2e.sh) to build a local end to end environment.
 
 ## 2. Test Environment
 * CentOS 7 VM, running on a SSD with 10GB of RAM.
-* 4 CPU cores.
-* xqa-test-data - 40 XML files, ranging in size between 829 bytes and 14 MB.
+* 4 logical cores.
 * Host + Guest OS's in an idle state.
 
-## 3. Test Result Graphs
+## 3. Unit Test Matplotlib's
 
 ### 3.1. Test: 1 ingest thread; 1 to 5 shards
 ![Test A](test_results/1_5.png)
@@ -50,10 +43,3 @@ $ docker logs dev_xqa-shard_1 | grep "insert" | wc -l
 
 ### 3.5. Test: 5 ingest threads; 1 to 5 shards
 ![Test B](test_results/5_5.png)
-
-## 4. Usage
-Assuming [requirements.txt](requirements.txt) installed; bin/build.sh run and xqa-test-data cloned.
-
-* export PYTHONPATH=$HOME/GIT_REPOS/xqa-perf/src:$HOME/GIT_REPOS/xqa-perf/test
-* cd ~/GIT_REPOS/xqa-perf
-* pytest -s
