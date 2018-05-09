@@ -18,7 +18,8 @@ export DEVPATH=$HOME/GIT_REPOS
 export PYTHONPATH=$DEVPATH/xqa-perf/src:$DEVPATH/xqa-perf/test:$PYTHONPATH
 export PATH=$DEVPATH/xqa-perf/bin:$PATH
 cd $DEVPATH/xqa-perf
-pytest -s
+pytest -s &> ~/Desktop/xqa-perf.log &
+tail -f ~/Desktop/xqa-perf.log
 ```
 
 ### 1.2. Bash Scripts
