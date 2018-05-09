@@ -32,6 +32,7 @@ def stats_db_fixture():
     stats_db.close()
 
 
+@pytest.mark.skip(reason="optional, not a core test")
 def test_png_produced_as_expected(stats_db_fixture: sqlite3.Connection, tmpdir):
     save_e2e_stats(stats_db_fixture, 3, 1, 40, 80056356, 22, 159, 152)
     save_e2e_stats(stats_db_fixture, 3, 2, 40, 80056356, 31, 185, 178)

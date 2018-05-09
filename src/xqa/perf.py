@@ -4,6 +4,9 @@ import subprocess
 import time
 from os import path
 
+import matplotlib
+matplotlib.use('Agg')
+
 import matplotlib.pyplot as plt
 import psycopg2
 from psycopg2._psycopg import List
