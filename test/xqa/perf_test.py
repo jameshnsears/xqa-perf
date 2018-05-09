@@ -6,6 +6,10 @@ import pytest
 from xqa.perf import *
 
 
+MAX_POOL_SIZE = multiprocessing.cpu_count() + 2
+MAX_SHARDS = multiprocessing.cpu_count() + 4
+
+
 @pytest.fixture
 def stats_db_fixture():
     stats_db = sqlite3.connect(':memory:')
@@ -53,14 +57,14 @@ def test_perf_single_e2e(stats_db_fixture: sqlite3.Connection, tmpdir):
 
 def test_perf_complete_e2e(stats_db_fixture: sqlite3.Connection):
     try:
-        for pool_size in range(1, multiprocessing.cpu_count() + 2):
-            for shards in range(1, multiprocessing.cpu_count() + 4):
+        for pool_size in range(1, MAX_POOL_SIZE):
+            for shards in range(1, MAX_SHARDS):
                 run_e2e_test(stats_db_fixture, pool_size, shards)
 
             make_png(retreive_e2e_stats(stats_db_fixture), path.abspath(path.join(path.dirname(__file__),
                                                                                   '../../test_results/%s_%s.png' % (
                                                                                       pool_size,
-                                                                                      multiprocessing.cpu_count() + 1))))
+                                                                                      MAX_SHARDS))))
             truncate_e2e_stats(stats_db_fixture)
     except Exception:
         logging.error('unable to complete test')
