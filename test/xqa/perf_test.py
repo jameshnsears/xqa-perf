@@ -7,7 +7,7 @@ from xqa.perf import *
 
 
 MAX_POOL_SIZE = multiprocessing.cpu_count() + 2
-MAX_SHARDS = multiprocessing.cpu_count() + 4
+MAX_SHARDS = multiprocessing.cpu_count() + 3
 
 
 @pytest.fixture
