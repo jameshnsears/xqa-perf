@@ -37,24 +37,24 @@ function reset_container_env() {
 reset_container_env
 
 if [ -z "$1" ]; then
-    YML="../docker-compose.dev.yml"
+    export YML="../docker-compose.dev.yml"
 else
-    YML=$1
+    export YML=$1
 fi
 
 if [[ -z "${POOL_SIZE}" ]]; then
-    POOL_SIZE=2
+    export POOL_SIZE=2
 fi
 
 if [[ -z "${SHARDS}" ]]; then
-    SHARDS=2
+    export SHARDS=2
 fi
 
 if [[ -z "${XQA_TEST_DATA}" ]]; then
-    XQA_TEST_DATA=$HOME/GIT_REPOS/xqa-test-data
+    export XQA_TEST_DATA=$HOME/GIT_REPOS/xqa-test-data
 fi
 
-echo $POOL_SIZE, $SHARDS
+printf "POOL_SIZE=%s; SHARDS=%s\n" $POOL_SIZE $SHARDS
 
 docker-compose -p "dev" -f $YML up -d xqa-message-broker
 docker-compose -p "dev" -f $YML up -d --scale xqa-shard=$SHARDS

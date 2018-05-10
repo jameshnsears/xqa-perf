@@ -65,7 +65,7 @@ def test_perf_complete_e2e(stats_db_fixture: sqlite3.Connection):
             make_png(retreive_e2e_stats(stats_db_fixture), path.abspath(path.join(path.dirname(__file__),
                                                                                   '../../test_results/%s_%s.png' % (
                                                                                       pool_size,
-                                                                                      MAX_SHARDS))))
+                                                                                      MAX_SHARDS -1))))
             truncate_e2e_stats(stats_db_fixture)
     except Exception:
         logging.error('unable to complete test')

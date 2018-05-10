@@ -1,6 +1,19 @@
 version: '3'
 
 services:
+  cadvisor:
+    image: google/cadvisor:latest
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      - xqa
+
   xqa-db:
     image: xqa-db:latest
     volumes:
@@ -21,7 +34,9 @@ services:
 
   xqa-ingest-balancer:
     image: xqa-ingest-balancer:latest
-    command: ["-message_broker_host", "xqa-message-broker", "-pool_size", "2"]
+    environment:
+      - POOL_SIZE
+    command: ["-message_broker_host", "xqa-message-broker"]
     networks:
       - xqa
     depends_on:

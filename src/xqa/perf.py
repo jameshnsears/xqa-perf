@@ -29,9 +29,9 @@ def invoke_e2e_env(pool_size: str, shards: str):
     ], stdout=subprocess.PIPE)
     output, error = process.communicate()
     if output:
-        logging.debug(output)
+        logging.debug(output.decode("utf-8"))
     if error:
-        logging.info(error)
+        logging.error(error)
 
 
 def wait_for_e2e_env_to_process_test_data():
