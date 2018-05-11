@@ -26,23 +26,21 @@ tail -f ~/Desktop/xqa-perf.log
 * Run [bin/e2e.sh](bin/e2e.sh) to build a local end to end environment.
 
 ## 2. Test Environment
-* CentOS 7 VM, running on a SSD with 10GB of RAM.
+* CentOS 7 VM, running on a SSD with 8GB of RAM.
 * 4 logical cores.
 * Host + Guest OS's in an idle state.
 
-## 3. Unit Test Matplotlib's
+## 3. Unit Test Results - Matplotlib's Graphs
+* each ingest thread has 5s to receive responses from shard(s).
 
-### 3.1. Test: 1 ingest thread; 1 to 5 shards
-![Test A](test_results/1_5.png)
+### 3.1. Test: 1 ingest thread; 1 to 6 shards
+![1_6](test_results/1_6.png)
 
-### 3.2. Test: 2 ingest threads; 1 to 5 shards
-![Test B](test_results/2_5.png)
+### 3.2. Test: 2 ingest threads; 1 to 6 shards
+![2_6](test_results/2_6.png)
 
-### 3.3. Test: 3 ingest threads; 1 to 5 shards
-![Test B](test_results/3_5.png)
+### 3.3. Test: 3 ingest threads; 1 to 6 shards
+![3_6](test_results/3_6.png)
 
-### 3.4. Test: 4 ingest threads; 1 to 5 shards
-![Test B](test_results/4_5.png)
-
-### 3.5. Test: 5 ingest threads; 1 to 5 shards
-![Test B](test_results/5_5.png)
+### 3.4. Test: 4 ingest threads; 1 to 6 shards
+![4_6](test_results/4_6.png)

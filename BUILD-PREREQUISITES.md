@@ -168,7 +168,7 @@ git clone https://github.com/jameshnsears/xqa-test-data
 cd $XQA_GIT_REPOS/xqa-perf/bin
 SHARDS=1 XQA_TEST_DATA=$XQA_GIT_REPOS/xqa-test-data ./e2e.sh
 
-# wait ~120 seconds / docker logs <dev_xqa-ingest_1 | dev_xqa-shard_1>
+# wait / docker logs <dev_xqa-ingest_1 | dev_xqa-shard_1>
 
 docker logs dev_xqa-shard_1 | grep "size=40"
 ```
