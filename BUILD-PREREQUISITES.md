@@ -14,7 +14,7 @@ apt-get -y install apt-transport-https ca-certificates curl gnupg2 software-prop
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
 add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
 apt-get update
-apt-get -y install docker-ce openjdk-8-jdk git curl
+apt-get -y install docker-ce openjdk-8-jdk git curl wget
 
 curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
@@ -35,7 +35,7 @@ su -
 yum install -y yum-utils device-mapper-persistent-data lvm2
 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 yum update
-yum install -y docker-ce java-1.8.0-openjdk-devel git
+yum install -y docker-ce java-1.8.0-openjdk-devel git curl
 
 curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
@@ -53,7 +53,7 @@ shutdown -r now
 sudo su -
 
 apt update
-apt install docker.io docker-compose openjdk-8-jdk git curl
+apt install docker.io docker-compose openjdk-8-jdk git curl wget
 
 usermod -aG docker jsears
 
