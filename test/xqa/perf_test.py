@@ -39,11 +39,11 @@ def test_png_produced_as_expected(stats_db_fixture: sqlite3.Connection, tmpdir):
     save_e2e_stats(stats_db_fixture, 3, 3, 40, 80056356, 28, 178, 171)
     save_e2e_stats(stats_db_fixture, 3, 4, 40, 80056356, 23, 182, 175)
 
-    atual_image = path.abspath(path.join(tmpdir.strpath, '3_1-2-3-4.png'))
+    atual_image = path.abspath(path.join(tmpdir.strpath, 'png_produced_as_expected.png'))
     make_png(retreive_e2e_stats(stats_db_fixture), atual_image)
 
     assert open(atual_image, 'rb').read() == open(
-        path.abspath(path.join(path.dirname(__file__), '../resources/3_1-2-3-4.png')), 'rb').read()
+        path.abspath(path.join(path.dirname(__file__), '../resources/png_produced_as_expected.png')), 'rb').read()
 
 
 @pytest.mark.skip(reason="optional, not a core test")
