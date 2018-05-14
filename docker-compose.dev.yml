@@ -45,8 +45,10 @@ services:
   xqa-message-broker:
     image: xqa-message-broker:latest
     ports:
+      - "1099:1099"
       - "5672:5672"
       - "8161:8161"
+      - "61616:61616"
     volumes:
       - "xqa-message-broker:/opt/apache-activemq-5.15.3/data"
     networks:
