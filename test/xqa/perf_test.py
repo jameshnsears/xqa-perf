@@ -26,6 +26,15 @@ def stats_db_fixture():
             time_ingest_balancer INTEGER NOT NULL,
             time_shard INTEGER NOT NULL)
     ''')
+    cursor.execute('''
+        CREATE TABLE shard_stats (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            pool_size INTEGER NOT NULL,
+            shards INTEGER NOT NULL,
+            service_id INTEGER NOT NULL,
+            storage_size INTEGER NOT NULL)
+    ''')
+
     stats_db.commit()
 
     yield stats_db
@@ -33,7 +42,7 @@ def stats_db_fixture():
 
 
 @pytest.mark.skip(reason="optional, not a core test")
-def test_png_produced_as_expected(stats_db_fixture: sqlite3.Connection, tmpdir):
+def test_png_produced_for_stats(stats_db_fixture: sqlite3.Connection, tmpdir):
     save_e2e_stats(stats_db_fixture, 3, 1, 40, 80056356, 22, 159, 152)
     save_e2e_stats(stats_db_fixture, 3, 2, 40, 80056356, 31, 185, 178)
     save_e2e_stats(stats_db_fixture, 3, 3, 40, 80056356, 28, 178, 171)
@@ -46,6 +55,10 @@ def test_png_produced_as_expected(stats_db_fixture: sqlite3.Connection, tmpdir):
         path.abspath(path.join(path.dirname(__file__), '../resources/png_produced_as_expected.png')), 'rb').read()
 
 
+def test_png_produced_for_shard_stats(stats_db_fixture: sqlite3.Connection, tmpdir):
+    assert 1 == 0
+
+
 @pytest.mark.skip(reason="optional, not a core test")
 def test_perf_single_e2e(stats_db_fixture: sqlite3.Connection, tmpdir):
     pool_size = 3
@@ -56,7 +69,7 @@ def test_perf_single_e2e(stats_db_fixture: sqlite3.Connection, tmpdir):
     truncate_e2e_stats(stats_db_fixture)
 
 
-def test_perf_complete_e2e(stats_db_fixture: sqlite3.Connection):
+def _test_perf_complete_e2e(stats_db_fixture: sqlite3.Connection):
     try:
         for pool_size in range(1, MAX_POOL_SIZE + 1):
             for shards in range(1, MAX_SHARDS + 1):

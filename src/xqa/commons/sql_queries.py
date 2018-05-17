@@ -24,3 +24,11 @@ from (
     order by events.when asc
 ) as creationtime;
 """
+
+shard_distribution = """
+select info->>'serviceId', count(info->>'storage_size')
+from events
+where info->>'serviceId' like 'shard/%%'
+  and info->>'state' = 'END'
+group by info->>'serviceId';
+"""
