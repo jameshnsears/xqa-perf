@@ -36,7 +36,7 @@ tail -f ~/Desktop/xqa-perf.log
 #### 4.1.1. 1 ingest thread; 1 to 2 shards
 | System Timing Stats | Shard Item Distribution |
 | ------------- | ------------- |
-| ![1_2-timing_stats](e2e_results/1_2-timing_stats.png) | ![1_2-shard_stats](e2e_results/1_2-shard_stats.png)  |
+| ![1_2-timing_stats](e2e_results/1_2-timing_stats.png?raw=true) | ![1_2-shard_stats](e2e_results/1_2-shard_stats.png)  |
 
 #### 4.1.2. 2 ingest threads; 1 to 2 shards
 | System Timing Stats | Shard Item Distribution |
