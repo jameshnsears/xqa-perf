@@ -3,22 +3,20 @@ import os
 import subprocess
 import time
 from os import path
+from typing import List
 
-import matplotlib
-matplotlib.use('Agg')
-
-import matplotlib.pyplot as plt
 import psycopg2
-from psycopg2._psycopg import List
 
 from xqa.commons import configuration, sql_queries
+from xqa.commons.charting.line_chart import LineChart
+from xqa.commons.charting.stacked_bar_chart import StackedBarChart
 
 
 class UnableToDetermineFinishState(Exception):
     pass
 
 
-def invoke_e2e_env(pool_size: str, shards: str):
+def invoke_e2e_env(pool_size: int, shards: int):
     logging.info('pool_size=%s; shards=%s' % (pool_size, shards))
     os.environ['POOL_SIZE'] = str(pool_size)
     os.environ['SHARDS'] = str(shards)
@@ -34,7 +32,7 @@ def invoke_e2e_env(pool_size: str, shards: str):
         logging.error(error)
 
 
-def wait_for_e2e_env_to_process_test_data():
+def wait_for_e2e_env_to_finish():
     _wait_for_service_to_complete('ingest')
     _wait_for_service_to_complete('ingestbalancer')
     _wait_for_service_to_complete('shard')
@@ -52,8 +50,7 @@ def how_long_service_took_to_process_ingest(service_id: str) -> int:
     return _query_db_for_count(sql_queries.how_long_service_took_to_process_test_data % service_id)
 
 
-def _wait_for_service_to_complete(stage: str):
-    test_data_items = 40
+def _wait_for_service_to_complete(stage: str, test_data_items: int = 40):
     sleep_attempts = 1
 
     while _query_db_for_count(sql_queries.count_items % stage) != test_data_items:
@@ -67,47 +64,40 @@ def _wait_for_service_to_complete(stage: str):
 
 
 def _query_db_for_count(sql: str) -> int:
-    try:
-        connection = psycopg2.connect("dbname='%s' user='%s' host='%s' password='%s'" %
-                                      (configuration.storage_database_name,
-                                       configuration.storage_user,
-                                       configuration.storage_host,
-                                       configuration.storage_password))
-        cursor = connection.cursor()
-        cursor.execute(sql)
-        return cursor.fetchall()[0][0]
-    except Exception:
-        pass
+    connection = psycopg2.connect("dbname='%s' user='%s' host='%s' password='%s'" %
+                                  (configuration.storage_database_name,
+                                   configuration.storage_user,
+                                   configuration.storage_host,
+                                   configuration.storage_password))
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    return cursor.fetchall()[0][0]
 
 
-def make_png(e2e_stats: List, location_to_save_chart):
+def get_item_count_to_shard_distribution() -> List:
+    connection = psycopg2.connect("dbname='%s' user='%s' host='%s' password='%s'" %
+                                  (configuration.storage_database_name,
+                                   configuration.storage_user,
+                                   configuration.storage_host,
+                                   configuration.storage_password))
+    cursor = connection.cursor()
+    cursor.execute(sql_queries.item_count_to_shard_distribution)
+    return cursor.fetchall()
+
+
+def make_png_shard_stats(shard_stats: List, location_to_save_chart: str):
     logging.info(location_to_save_chart)
 
-    number_of_shards = []
-    ingest = []
-    ingest_balancer = []
-    shard = []
+    stacked_bar_chart = StackedBarChart(shard_stats)
+    stacked_bar_chart.construct_bars()
+    stacked_bar_chart.annotate()
+    StackedBarChart.write(location_to_save_chart)
 
-    for row in e2e_stats:
-        pool_size = row[0]
-        number_of_shards.append(row[1])
-        ingest_count = row[2]
-        ingest_size = row[3]
-        ingest.append(row[4])
-        ingest_balancer.append(row[5])
-        shard.append(row[6])
-        logging.info(row)
 
-    plt.plot(number_of_shards, ingest, marker='x', color='red', label='ingest')
-    plt.plot(number_of_shards, ingest_balancer, marker='x', color='grey', label='ingest-balancer')
-    plt.plot(number_of_shards, shard, marker='x', color='blue', label='shard')
+def make_png_timing_stats(timing_stats: List, location_to_save_chart: str):
+    logging.info(location_to_save_chart)
 
-    # plt.grid()
-    plt.xlabel('shards')
-    plt.ylabel('seconds')
-    plt.title('%s bytes / %s items; %s ingest-balancer threads' % (ingest_size, ingest_count, pool_size))
-    plt.legend()
-
-    # plt.show()
-    plt.savefig(location_to_save_chart)
-    plt.close()
+    line_chart = LineChart(timing_stats)
+    line_chart.construct_lines()
+    line_chart.annotate()
+    LineChart.write(location_to_save_chart)

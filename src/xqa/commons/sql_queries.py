@@ -25,8 +25,8 @@ from (
 ) as creationtime;
 """
 
-shard_distribution = """
-select info->>'serviceId', count(info->>'storage_size')
+item_count_to_shard_distribution = """
+select info->>'serviceId' as service_id, count(info->>'storage_size') as storage_size
 from events
 where info->>'serviceId' like 'shard/%%'
   and info->>'state' = 'END'

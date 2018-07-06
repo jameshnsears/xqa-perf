@@ -1,133 +1,25 @@
 import multiprocessing
-import sqlite3
 
-import pytest
-
-from xqa.perf import *
-
-
-MAX_POOL_SIZE = multiprocessing.cpu_count()
-MAX_SHARDS = multiprocessing.cpu_count() + 2
+from .testing_support.bash_testing_support import run_e2e_test
+from .testing_support.chart_testing_support import create_e2e_test_charts
+from .testing_support.db_testing_support import *
 
 
-@pytest.fixture
-def stats_db_fixture():
-    stats_db = sqlite3.connect(':memory:')
-
-    cursor = stats_db.cursor()
-    cursor.execute('''
-        CREATE TABLE stats (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            pool_size INTEGER NOT NULL,
-            shards INTEGER NOT NULL,
-            ingest_count INTEGER NOT NULL,
-            ingest_size INTEGER NOT NULL,
-            time_ingest INTEGER NOT NULL,
-            time_ingest_balancer INTEGER NOT NULL,
-            time_shard INTEGER NOT NULL)
-    ''')
-    cursor.execute('''
-        CREATE TABLE shard_stats (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            pool_size INTEGER NOT NULL,
-            shards INTEGER NOT NULL,
-            service_id INTEGER NOT NULL,
-            storage_size INTEGER NOT NULL)
-    ''')
-
-    stats_db.commit()
-
-    yield stats_db
-    stats_db.close()
+@pytest.mark.skip(reason="single core, single shard test")
+def test_e2e_single_cpu_core(create_stats_db_fixture: sqlite3.Connection):
+    run_e2e_test(create_stats_db_fixture)
+    create_e2e_test_charts(create_stats_db_fixture)
+    truncate_stats_db(create_stats_db_fixture)
 
 
-@pytest.mark.skip(reason="optional, not a core test")
-def test_png_produced_for_stats(stats_db_fixture: sqlite3.Connection, tmpdir):
-    save_e2e_stats(stats_db_fixture, 3, 1, 40, 80056356, 22, 159, 152)
-    save_e2e_stats(stats_db_fixture, 3, 2, 40, 80056356, 31, 185, 178)
-    save_e2e_stats(stats_db_fixture, 3, 3, 40, 80056356, 28, 178, 171)
-    save_e2e_stats(stats_db_fixture, 3, 4, 40, 80056356, 23, 182, 175)
+def test_e2e_max_cpu_cores(create_stats_db_fixture: sqlite3.Connection):
+    max_ingest_balancer_pool_size = multiprocessing.cpu_count()
+    max_shards = multiprocessing.cpu_count()
 
-    atual_image = path.abspath(path.join(tmpdir.strpath, 'png_produced_as_expected.png'))
-    make_png(retreive_e2e_stats(stats_db_fixture), atual_image)
+    for pool_size in range(1, max_ingest_balancer_pool_size + 1):
+        for shards in range(1, max_shards + 1):
+            run_e2e_test(create_stats_db_fixture, pool_size, shards)
 
-    assert open(atual_image, 'rb').read() == open(
-        path.abspath(path.join(path.dirname(__file__), '../resources/png_produced_as_expected.png')), 'rb').read()
+        create_e2e_test_charts(create_stats_db_fixture, pool_size, max_shards)
 
-
-def test_png_produced_for_shard_stats(stats_db_fixture: sqlite3.Connection, tmpdir):
-    assert 1 == 0
-
-
-@pytest.mark.skip(reason="optional, not a core test")
-def test_perf_single_e2e(stats_db_fixture: sqlite3.Connection, tmpdir):
-    pool_size = 3
-    shards = 1
-    run_e2e_test(stats_db_fixture, 4, 1)
-    png_filename = path.abspath(path.join(tmpdir.strpath, '%s_%s.png' % (pool_size, shards)))
-    make_png(retreive_e2e_stats(stats_db_fixture), png_filename)
-    truncate_e2e_stats(stats_db_fixture)
-
-
-def _test_perf_complete_e2e(stats_db_fixture: sqlite3.Connection):
-    try:
-        for pool_size in range(1, MAX_POOL_SIZE + 1):
-            for shards in range(1, MAX_SHARDS + 1):
-                run_e2e_test(stats_db_fixture, pool_size, shards)
-
-            make_png(retreive_e2e_stats(stats_db_fixture), path.abspath(path.join(path.dirname(__file__),
-                                                                                  '../../test_results/%s_%s.png' % (
-                                                                                      pool_size,
-                                                                                      MAX_SHARDS))))
-            truncate_e2e_stats(stats_db_fixture)
-    except Exception:
-        logging.error('unable to complete test')
-
-
-def run_e2e_test(stats_db_fixture: sqlite3.Connection, pool_size: int, shards: int):
-    invoke_e2e_env(pool_size, shards)
-    wait_for_e2e_env_to_process_test_data()
-
-    time_ingest = how_long_service_took_to_process_ingest('ingest')
-    time_ingest_balancer = how_long_service_took_to_process_ingest('ingestbalancer')
-    time_shard = how_long_service_took_to_process_ingest('shard')
-
-    save_e2e_stats(stats_db_fixture, pool_size, shards,
-                   get_ingest_count(),
-                   get_ingest_size(),
-                   time_ingest,
-                   time_ingest_balancer,
-                   time_shard)
-
-
-def save_e2e_stats(stats_db_fixture: sqlite3.Connection,
-                   pool_size: int,
-                   shards: int,
-                   ingest_count: int,
-                   ingest_size: int,
-                   time_ingest: int,
-                   time_ingest_balancer: int,
-                   time_shard: int):
-    logging.info(
-        'pool_size=%d, shards=%d; ingest_count=%d; ingest_size=%d; time_ingest=%d; time_ingest_balancer=%d; time_shard=%d' %
-        (pool_size, shards, ingest_count, ingest_size, time_ingest, time_ingest_balancer, time_shard))
-
-    cursor = stats_db_fixture.cursor()
-    cursor.execute('''INSERT INTO stats(pool_size, shards, ingest_count, ingest_size, time_ingest, time_ingest_balancer, time_shard)
-        VALUES(?, ?, ?, ?, ?, ?, ?)''',
-                   (pool_size, shards, ingest_count, ingest_size, time_ingest, time_ingest_balancer, time_shard))
-    stats_db_fixture.commit()
-
-
-def retreive_e2e_stats(stats_db_fixture: sqlite3.Connection) -> List:
-    cursor = stats_db_fixture.cursor()
-    cursor.execute(
-        '''SELECT pool_size, shards, ingest_count, ingest_size, time_ingest, time_ingest_balancer, time_shard FROM stats''')
-    return cursor.fetchall()
-
-
-def truncate_e2e_stats(stats_db_fixture: sqlite3.Connection):
-    cursor = stats_db_fixture.cursor()
-    cursor.execute(
-        '''DELETE FROM stats''')
-    return cursor.fetchall()
+        truncate_stats_db(create_stats_db_fixture)

@@ -18,9 +18,9 @@ function docker_compose_build() {
     NOW=`date --rfc-3339='ns'`
     echo ">>> $NOW docker_compose_build $1"
     clone_git_repo $1
-    cd $BLD_DIR/$1
-    docker-compose -p $DOCKER_ENV build
-    cd $HOME_DIR
+    cd ${BLD_DIR}/$1
+    docker-compose -p ${DOCKER_ENV} build
+    cd ${HOME_DIR}
 }
 
 function mvn_docker_compose_build() {
@@ -28,10 +28,10 @@ function mvn_docker_compose_build() {
     NOW=`date --rfc-3339='ns'`
     echo ">>> $NOW mvn_docker_compose_build $1"
     clone_git_repo $1
-    cd $BLD_DIR/$1
+    cd ${BLD_DIR}/$1
     mvn clean compile package -DskipTests
-    docker-compose -p $DOCKER_ENV build
-    cd $HOME_DIR
+    docker-compose -p ${DOCKER_ENV} build
+    cd ${HOME_DIR}
 }
 
 function angular() {
@@ -39,15 +39,15 @@ function angular() {
     NOW=`date --rfc-3339='ns'`
     echo ">>> $NOW ng $1"
     clone_git_repo $1
-    cd $BLD_DIR/xqa-query-ui
+    cd ${BLD_DIR}/xqa-query-ui
     npm install
     npm install -g @angular/cli
     npm install primeng --save
     npm install @angular/animations --save
     npm install font-awesome --save
     ng build --prod --build-optimizer
-    docker-compose -p $DOCKER_ENV build
-    cd $HOME_DIR
+    docker-compose -p ${DOCKER_ENV} build
+    cd ${HOME_DIR}
 }
 
 function cadvisor() {

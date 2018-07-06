@@ -13,16 +13,16 @@ function create_network() {
 
 function create_build_dir() {
     if [ -d "$BLD_DIR/$1" ]; then
-        rm -rf $BLD_DIR/$1
+        rm -rf ${BLD_DIR}/$1
     fi
-    mkdir $BLD_DIR
+    mkdir ${BLD_DIR}
 }
 
 function clone_git_repo() {
     create_build_dir $1
     NOW=`date --rfc-3339='ns'`
     echo ">>> $NOW clone_git_repo"
-    git clone https://github.com/jameshnsears/$1 $BLD_DIR/$1
+    git clone https://github.com/jameshnsears/$1 ${BLD_DIR}/$1
 }
 
 function reset_container_env() {
@@ -54,11 +54,12 @@ if [[ -z "${XQA_TEST_DATA}" ]]; then
     export XQA_TEST_DATA=$HOME/GIT_REPOS/xqa-test-data
 fi
 
-printf "POOL_SIZE=%s; SHARDS=%s\n" $POOL_SIZE $SHARDS
+printf "POOL_SIZE=%s; SHARDS=%s\n" ${POOL_SIZE} ${SHARDS}
 
-docker-compose -p "dev" -f $YML up -d xqa-message-broker
-docker-compose -p "dev" -f $YML up -d --scale xqa-shard=$SHARDS
+docker-compose -p "dev" -f ${YML} up -d xqa-db
+docker-compose -p "dev" -f ${YML} up -d xqa-message-broker
+docker-compose -p "dev" -f ${YML} up -d --scale xqa-shard=${SHARDS}
 
-docker run -d --net="dev_xqa" --name="dev_xqa-ingest_1" -v $XQA_TEST_DATA:/xml xqa-ingest:latest -message_broker_host xqa-message-broker -path /xml
+docker run -d --net="dev_xqa" --name="dev_xqa-ingest_1" -v ${XQA_TEST_DATA}:/xml xqa-ingest:latest -message_broker_host xqa-message-broker -path /xml
 
 exit $?
