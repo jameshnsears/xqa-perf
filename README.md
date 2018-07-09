@@ -1,22 +1,32 @@
 # xqa-perf [![Build Status](https://travis-ci.org/jameshnsears/xqa-perf.svg?branch=master)](https://travis-ci.org/jameshnsears/xqa-perf) 
 * environment construction / end to end performance metrics.
-* .travis.yml shows a simple end to end test, using containers build from source.
+* a .travis.yml shows a simple end to end test, using containers build from source.
 
 ## 1. Introduction
 xqa-perf is composed of two parts:
 * a set of stand alone **bash Scripts** - [bin](bin) that provision / publish the containers.
-* a python **Unit Test** - [test/xqa/perf_test.py](test/xqa/perf_test.py) - that produces matplotlib graphs showing end to end performance of xqa using the xqa-test-data.
+* a python **Unit Test** - [test/xqa/perf_test.py](test/xqa/perf_test.py) - that produces Matplotlib graphs showing end to end performance using the [xqa-test-data](https://github.com/jameshnsears/xqa-test-data).
 
-The bash scripts are also used by the end to end performance metric unit test.
+The bash scripts are also used by the unit test for environment setup / teardown.
 
 ## 2. Bash Scripts
 * Run [bin/e2e.sh](bin/e2e.sh) to build a local environment built from GitHub source clones.
 
 ## 3. Unit Test
-The unit test involves the multiple setup and teardown of containers - based on the CPU count of the host. Each setup / teardown uses a different # of ingest-balancer threads as well as # of shards: it is a long running test that is very CPU intensive. Throughout the test statistics are kept and, at various intervals, graphs are output into the [test_results](test_results) folder (see below).
+The unit test involves the setup and teardown of containers - the maximum # of shards based on the CPU count of the host.
+
+Each setup / teardown uses a different # of ingest-balancer threads as well as # of shards.
+
+The unit test is long running and very CPU intensive.
+
+Throughout the test statistics are kept and, at various intervals, graphs are output into the [e2e_results](e2e_results) folder.
 
 ### 3.1. Usage
-Assuming [requirements.txt](requirements.txt) installed; bin/build.sh run and xqa-test-data cloned.
+Assuming:
+* [Build Prerequisites](https://github.com/jameshnsears/xqa-documentation/blob/master/BUILD-PREREQUISITES.md) are met.
+* [requirements.txt](requirements.txt) installed
+* [bin/build.sh](bin/build.sh) run
+* xqa-test-data cloned.
 
 ```
 export DEVPATH=$HOME/GIT_REPOS
@@ -33,34 +43,34 @@ tail -f ~/Desktop/xqa-perf.log
 
 ### 4.1. 5GB RAM; 2 logical cores
 
-#### 4.1.1. 1 ingest thread; 1 to 2 shards
+#### A. 1 ingest thread; 1 to 2 shards
 | System Timing Stats | Shard Item Distribution |
 | ------------- | ------------- |
 | ![1_2-timing_stats](e2e_results/1_2-timing_stats.png?raw=true) | ![1_2-shard_stats](e2e_results/1_2-shard_stats.png)  |
 
-#### 4.1.2. 2 ingest threads; 1 to 2 shards
+#### B. 2 ingest threads; 1 to 2 shards
 | System Timing Stats | Shard Item Distribution |
 | ------------- | ------------- |
 | ![2_2-timing_stats](e2e_results/2_2-timing_stats.png) | ![2_2-shard_stats](e2e_results/2_2-shard_stats.png)  |
 
 ### 4.2. 8GB RAM; 4 logical cores
 
-#### 4.2.1. 1 ingest thread; 1 to 4 shards
+#### A. 1 ingest thread; 1 to 4 shards
 | System Timing Stats | Shard Item Distribution |
 | ------------- | ------------- |
 | ![1_4-timing_stats](e2e_results/1_4-timing_stats.png) | ![1_4-shard_stats](e2e_results/1_4-shard_stats.png)  |
 
-#### 4.2.2. 2 ingest threads; 1 to 4 shards
+#### B. 2 ingest threads; 1 to 4 shards
 | System Timing Stats | Shard Item Distribution |
 | ------------- | ------------- |
 | ![2_4-timing_stats](e2e_results/2_4-timing_stats.png) | ![2_4-shard_stats](e2e_results/2_4-shard_stats.png)  |
 
-#### 4.2.3. 3 ingest threads; 1 to 4 shards
+#### C. 3 ingest threads; 1 to 4 shards
 | System Timing Stats | Shard Item Distribution |
 | ------------- | ------------- |
 | ![3_4-timing_stats](e2e_results/3_4-timing_stats.png) | ![3_4-shard_stats](e2e_results/3_4-shard_stats.png)  |
 
-#### 4.2.4. 4 ingest threads; 1 to 4 shards
+#### D. 4 ingest threads; 1 to 4 shards
 | System Timing Stats | Shard Item Distribution |
 | ------------- | ------------- |
 | ![4_4-timing_stats](e2e_results/4_4-timing_stats.png) | ![_-shard_stats](e2e_results/4_4-shard_stats.png)  |
