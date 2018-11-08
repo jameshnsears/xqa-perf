@@ -19,7 +19,6 @@ publish_to_docker_hub xqa-db-amqp
 publish_to_docker_hub xqa-ingest
 publish_to_docker_hub xqa-ingest-balancer
 publish_to_docker_hub xqa-message-broker
-publish_to_docker_hub xqa-message-broker-filebeat
 publish_to_docker_hub xqa-query-ui
 publish_to_docker_hub xqa-query-balancer
 publish_to_docker_hub xqa-shard
