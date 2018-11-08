@@ -59,7 +59,6 @@ function cadvisor() {
 
 if [[ -z "${TRAVISCI}" ]]; then
     reset_docker_env
-    docker_compose_build xqa-elk
     angular xqa-query-ui
     mvn_docker_compose_build xqa-query-balancer
 fi
