@@ -50,7 +50,7 @@ services:
       - "8161:8161"
       - "61616:61616"
     volumes:
-      - "xqa-message-broker:/opt/apache-activemq-5.15.3/data"
+      - "xqa-message-broker:/opt/apache-activemq-5.15.7/data"
     networks:
       - xqa
 
