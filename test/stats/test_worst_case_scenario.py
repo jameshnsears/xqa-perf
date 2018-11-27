@@ -1,5 +1,3 @@
-import os
-
 import pytest
 
 from stats.common import one_shard
@@ -27,10 +25,8 @@ def dockerpy_1_shard():
 
 stats_db = create_stats_db()
 
-os.environ["PYTEST_DOCKER_PY_KEEP_LOGS"] = "1"
 
-
-def test_1_shards_1_client1(dockerpy_1_shard):
+def test_1_shards_1_client(dockerpy_1_shard):
     wait_for_e2e_ingest_to_complete()
     save_values_for_graphs(stats_db, INGEST_THREADS, 1)
     create_graphs(stats_db, INGEST_THREADS)

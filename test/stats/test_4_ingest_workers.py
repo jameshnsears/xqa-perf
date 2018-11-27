@@ -11,7 +11,10 @@ INGEST_THREADS = 4
 ingest_balancer = [
     {'image': 'xqa-ingest-balancer:latest',
      'name': 'xqa-ingest-balancer',
-     'command': ['-message_broker_host', 'xqa-message-broker', '-pool_size', '%s' % INGEST_THREADS],
+     'command': ['-message_broker_host', 'xqa-message-broker',
+                 '-pool_size', '%s' % INGEST_THREADS,
+                 '-insert_thread_wait', '1000',
+                 '-insert_thread_secondary_wait', '1000'],
      'network': 'xqa'},
 ]
 

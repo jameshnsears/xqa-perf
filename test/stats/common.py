@@ -1,8 +1,7 @@
+import os
 from os import path
 
-"""
-docker run -d --name=cadvisor -p 8888:8080 --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro google/cadvisor:latest
-"""
+os.environ["PYTEST_DOCKER_PY_KEEP_LOGS"] = "1"
 
 one_shard = [
     {'image': 'google/cadvisor:latest',
