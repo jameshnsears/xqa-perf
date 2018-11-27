@@ -1,6 +1,21 @@
 from os import path
 
-common_containers = [
+"""
+docker run -d --name=cadvisor -p 8888:8080 --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro google/cadvisor:latest
+"""
+
+one_shard = [
+    {'image': 'google/cadvisor:latest',
+     'name': 'cadvisor',
+     'ports': {'8080/tcp': 8888},
+     'volumes': {
+         '/': {'bind': '/rootfs', 'mode': 'ro'},
+         '/var/run': {'bind': '/var/run', 'mode': 'rw'},
+         '/sys': {'bind': '/sys', 'mode': 'ro'},
+         '/var/lib/docker/': {'bind': '/var/lib/docker', 'mode': 'ro'},
+         '/dev/disk': {'bind': '/dev/disk', 'mode': 'ro'}},
+     },
+
     {'image': 'xqa-message-broker:latest',
      'name': 'xqa-message-broker',
      'ports': {'5672/tcp': 5672, '8161/tcp': 8161},
@@ -13,7 +28,7 @@ common_containers = [
 
     {'image': 'xqa-shard:latest',
      'name': 'xqa-shard-01',
-     'ports': {'1983/tcp': None},
+     'ports': {'1984/tcp': None},
      'command': ['-message_broker_host', 'xqa-message-broker'],
      'network': 'xqa'},
 
@@ -29,4 +44,60 @@ common_containers = [
          path.abspath(path.join(path.dirname(__file__), '../../../xqa-test-data')): {'bind': '/xml', 'mode': 'rw'}},
      'network': 'xqa'
      }
+]
+
+two_shards = one_shard + [
+    {'image': 'xqa-shard:latest',
+     'name': 'xqa-shard-02',
+     'ports': {'1984/tcp': None},
+     'command': ['-message_broker_host', 'xqa-message-broker'],
+     'network': 'xqa'}
+]
+
+three_shards = two_shards + [
+    {'image': 'xqa-shard:latest',
+     'name': 'xqa-shard-03',
+     'ports': {'1984/tcp': None},
+     'command': ['-message_broker_host', 'xqa-message-broker'],
+     'network': 'xqa'},
+]
+
+four_shards = three_shards + [
+    {'image': 'xqa-shard:latest',
+     'name': 'xqa-shard-04',
+     'ports': {'1984/tcp': None},
+     'command': ['-message_broker_host', 'xqa-message-broker'],
+     'network': 'xqa'},
+]
+
+five_shards = four_shards + [
+    {'image': 'xqa-shard:latest',
+     'name': 'xqa-shard-05',
+     'ports': {'1984/tcp': None},
+     'command': ['-message_broker_host', 'xqa-message-broker'],
+     'network': 'xqa'},
+]
+
+six_shards = five_shards + [
+    {'image': 'xqa-shard:latest',
+     'name': 'xqa-shard-06',
+     'ports': {'1984/tcp': None},
+     'command': ['-message_broker_host', 'xqa-message-broker'],
+     'network': 'xqa'},
+]
+
+seven_shards = six_shards + [
+    {'image': 'xqa-shard:latest',
+     'name': 'xqa-shard-07',
+     'ports': {'1984/tcp': None},
+     'command': ['-message_broker_host', 'xqa-message-broker'],
+     'network': 'xqa'},
+]
+
+eight_shards = seven_shards + [
+    {'image': 'xqa-shard:latest',
+     'name': 'xqa-shard-08',
+     'ports': {'1984/tcp': None},
+     'command': ['-message_broker_host', 'xqa-message-broker'],
+     'network': 'xqa'},
 ]
