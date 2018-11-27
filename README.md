@@ -14,15 +14,10 @@ TODO
 
 | CPU Cores | Ingest threads | Shards | Timing statistics | XML file distribution |
 | ------------- | ------------- | ------------- | ------------- |
-| 4 | 1 | 1 | ![4-1_1-timing_stats](graphs/4-1_1-timing_stats.png) | ![4-1_1-file_distribution](graphs/4-1_1-file_distribution.png) |
-| 4 | 1 | 2 | | |
-| 4 | 1 | 4 | | |
-| 4 | 2 | 1 | | |
-| 4 | 2 | 2 | | |
-| 4 | 2 | 4 | | |
-| 4 | 4 | 1 | | |
-| 4 | 4 | 2 | | |
-| 4 | 4 | 4 | | |
+| 4 | 1 | 1 - 4 | ![4-1_1-timing_stats](graphs/4-1_4-timing_stats.png) | ![4-1_1-file_distribution](graphs/4-1_4-file_distribution.png) |
+| 4 | 1 | 1 - 4 | | |
+| 4 | 2 | 1 - 4 | | |
+| 4 | 4 | 1 - 4 | | |
 
 ### 1.2. MSI
 * Memory: 15.6 GiB
@@ -31,19 +26,7 @@ TODO
 
 | CPU Cores | Ingest threads | Shards | Timing statistics | XML file distribution |
 | ------------- | ------------- | ------------- | ------------- |
-| 8 | | 1 | | | |
-| 8 | 1 | 2 | | |
-| 8 | 1 | 4 | | |
-| 8 | 1 | 8 | | |
-| 8 | 2 | 1 | | |
-| 8 | 2 | 2 | | |
-| 8 | 2 | 4 | | |
-| 8 | 2 | 8 | | |
-| 8 | 4 | 1 | | |
-| 8 | 4 | 2 | | |
-| 8 | 4 | 4 | | |
-| 8 | 4 | 8 | | |
-| 8 | 8 | 1 | | |
-| 8 | 8 | 2 | | |
-| 8 | 8 | 4 | | |
-| 8 | 8 | 8 | | |
+| 8 | 1 | 1 - 8 | | |
+| 8 | 2 | 1 - 8 | | |
+| 8 | 4 | 1 - 8 | | |
+| 8 | 8 | 1 - 8 | | |
