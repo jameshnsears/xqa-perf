@@ -25,7 +25,7 @@ class StackedBarChart(Chart):
 
     def construct_bars(self):
         matrix = self.transform_source_data_into_a_matrix()
-        logging.info(matrix)
+        logging.debug(matrix)
 
         for i, c in enumerate(matrix):
             if i == 0:

@@ -16,5 +16,5 @@ def test_line_chart(tmpdir):
     atual_image = path.abspath(path.join(tmpdir.strpath, 'expected_line_chart.png'))
     line_chart.write(atual_image)
     assert open(atual_image, 'rb').read() == open(
-        path.abspath(path.join(path.dirname(__file__), '../../../resources/png/expected_line_chart.png')),
+        path.abspath(path.join(path.dirname(__file__), '../resources/png/expected_line_chart.png')),
         'rb').read()

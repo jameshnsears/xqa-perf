@@ -1,8 +1,10 @@
-.coverage
 build
+.coverage
 dist
 *.egg-info/
 /.idea/
+*.pyc
+/__pycache__/
 /.pytest_cache/
-/.vscode/
 /venv*/
+/.vscode/

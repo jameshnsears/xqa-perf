@@ -1,38 +1,18 @@
 import logging
-import os
-import subprocess
 import time
-from os import path
 from typing import List
 
 import psycopg2
 
 from xqa.commons import configuration, sql_queries
 from xqa.commons.charting.line_chart import LineChart
-from xqa.commons.charting.stacked_bar_chart import StackedBarChart
 
 
 class UnableToDetermineFinishState(Exception):
     pass
 
 
-def invoke_e2e_env(pool_size: int, shards: int):
-    logging.info('pool_size=%s; shards=%s' % (pool_size, shards))
-    os.environ['POOL_SIZE'] = str(pool_size)
-    os.environ['SHARDS'] = str(shards)
-
-    process = subprocess.Popen([
-        path.abspath(path.join(path.dirname(__file__), '../../bin/e2e.sh')),
-        path.abspath(path.join(path.dirname(__file__), '../../docker-compose.dev.yml'))
-    ], stdout=subprocess.PIPE)
-    output, error = process.communicate()
-    if output:
-        logging.debug(output.decode("utf-8"))
-    if error:
-        logging.error(error)
-
-
-def wait_for_e2e_env_to_finish():
+def wait_for_e2e_ingest_to_complete():
     _wait_for_service_to_complete('ingest')
     _wait_for_service_to_complete('ingestbalancer')
     _wait_for_service_to_complete('shard')
@@ -65,33 +45,24 @@ def _wait_for_service_to_complete(stage: str, test_data_items: int = 40):
 
 def _query_db_for_count(sql: str) -> int:
     connection = psycopg2.connect("dbname='%s' user='%s' host='%s' password='%s'" %
-                                  (configuration.storage_database_name,
-                                   configuration.storage_user,
-                                   configuration.storage_host,
-                                   configuration.storage_password))
+                                  (configuration.sqlite_name,
+                                   configuration.sqlite_user,
+                                   configuration.sqlite_host,
+                                   configuration.sqlite_password))
     cursor = connection.cursor()
     cursor.execute(sql)
     return cursor.fetchall()[0][0]
 
 
-def get_item_count_to_shard_distribution() -> List:
+def get_file_distribution() -> List:
     connection = psycopg2.connect("dbname='%s' user='%s' host='%s' password='%s'" %
-                                  (configuration.storage_database_name,
-                                   configuration.storage_user,
-                                   configuration.storage_host,
-                                   configuration.storage_password))
+                                  (configuration.sqlite_name,
+                                   configuration.sqlite_user,
+                                   configuration.sqlite_host,
+                                   configuration.sqlite_password))
     cursor = connection.cursor()
     cursor.execute(sql_queries.item_count_to_shard_distribution)
     return cursor.fetchall()
-
-
-def make_png_shard_stats(shard_stats: List, location_to_save_chart: str):
-    logging.info(location_to_save_chart)
-
-    stacked_bar_chart = StackedBarChart(shard_stats)
-    stacked_bar_chart.construct_bars()
-    stacked_bar_chart.annotate()
-    StackedBarChart.write(location_to_save_chart)
 
 
 def make_png_timing_stats(timing_stats: List, location_to_save_chart: str):

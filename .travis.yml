@@ -4,40 +4,31 @@ notifications:
 email: james.hn.sears@gmail.com
 
 services:
-  - docker
+- docker
 
-cache: 
-  directories:
-  - $HOME/.m2
+language: python
 
-env:
-  - TRAVISCI=1
+python:
+- "3.6"
 
 before_script:
   - sudo service postgresql stop
   - while sudo lsof -Pi :5432 -sTCP:LISTEN -t; do sleep 1; done
 
+  - pip install --upgrade pip
+  - pip install -r requirements.txt
+  - flake8 src test
+
   - cd bin
-  - ./build.sh
-  - cd ..
+  - ./pull.sh
+
+  - cd ../..
+  - git clone https://github.com/jameshnsears/xqa-test-data
+  - cd xqa-perf
 
 script:
-  - docker-compose -p "dev" -f docker-compose.dev.yml up -d xqa-message-broker
+  - export PYTHONPATH=src:test:$PYTHONPATH
+  - pytest -s --cov-report term-missing --cov . test/xqa
 
-  - docker-compose -p "dev" -f docker-compose.dev.yml up -d --scale xqa-shard=1
-
-  - cd ..
-  - git clone https://github.com/jameshnsears/xqa-test-data
-  - docker run -d --net="dev_xqa" --name="dev_xqa-ingest" -v /home/travis/build/jameshnsears/xqa-test-data:/xml xqa-ingest:latest -message_broker_host xqa-message-broker -path /xml
-
-  - sleep 120
-
-  - docker logs xqa-shard_1 | grep "size=40"
-
-after_failure:
-  - docker images
-  - docker ps -a
-  - docker logs dev_xqa-ingest
-  - docker logs dev_xqa-message-broker
-  - docker logs dev_xqa-ingest-balancer
-  - docker logs dev_xqa-shard
+after_success:
+  - COVERALLS_REPO_TOKEN=BjqwtkfNDYaiJng8qgld3mS8ROW23xc0c coveralls

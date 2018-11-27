@@ -2,13 +2,9 @@ import logging
 import sqlite3
 from typing import List
 
-import pytest
 
-
-@pytest.fixture
-def create_stats_db_fixture():
+def create_stats_db():
     stats_db = sqlite3.connect(':memory:')
-
     cursor = stats_db.cursor()
     cursor.execute('''
         CREATE TABLE timing_stats (
@@ -27,14 +23,11 @@ def create_stats_db_fixture():
             shards INTEGER NOT NULL,
             storage_size INTEGER NOT NULL)
     ''')
-
     stats_db.commit()
-
-    yield stats_db
-    stats_db.close()
+    return stats_db
 
 
-def save_timing_stats(stats_db_fixture: sqlite3.Connection,
+def save_timing_stats(stats_db: sqlite3.Connection,
                       pool_size: int,
                       shards: int,
                       ingest_count: int,
@@ -45,39 +38,32 @@ def save_timing_stats(stats_db_fixture: sqlite3.Connection,
     logging.info(
         'pool_size=%d, shards=%d; ingest_count=%d; ingest_size=%d; time_ingest=%d; time_ingest_balancer=%d; time_shard=%d' %
         (pool_size, shards, ingest_count, ingest_size, time_ingest, time_ingest_balancer, time_shard))
-    cursor = stats_db_fixture.cursor()
+    cursor = stats_db.cursor()
     cursor.execute('''INSERT INTO timing_stats(pool_size, shards, ingest_count, ingest_size, time_ingest, time_ingest_balancer, time_shard)
         VALUES(?, ?, ?, ?, ?, ?, ?)''',
                    (pool_size, shards, ingest_count, ingest_size, time_ingest, time_ingest_balancer, time_shard))
-    stats_db_fixture.commit()
+    stats_db.commit()
 
 
-def retreive_timing_stats(stats_db_fixture: sqlite3.Connection) -> List:
-    cursor = stats_db_fixture.cursor()
+def retrieve_timing_stats(stats_db: sqlite3.Connection) -> List:
+    cursor = stats_db.cursor()
     cursor.execute(
         '''SELECT pool_size, shards, ingest_count, ingest_size, time_ingest, time_ingest_balancer, time_shard FROM timing_stats''')
     return cursor.fetchall()
 
 
-def save_shard_stats(stats_db_fixture: sqlite3.Connection,
-                     shards: int,
-                     storage_size: int):
+def save_file_distribution(stats_db: sqlite3.Connection,
+                           shards: int,
+                           storage_size: int):
     logging.info('shards=%d; storage_size=%d' % (shards, storage_size))
-    cursor = stats_db_fixture.cursor()
+    cursor = stats_db.cursor()
     cursor.execute('''INSERT INTO shard_stats(shards, storage_size) VALUES(?, ?)''',
                    (shards, storage_size))
-    stats_db_fixture.commit()
+    stats_db.commit()
 
 
-def retreive_shard_stats(stats_db_fixture: sqlite3.Connection) -> List:
-    cursor = stats_db_fixture.cursor()
+def retrieve_file_distribution(stats_db: sqlite3.Connection) -> List:
+    cursor = stats_db.cursor()
     cursor.execute(
         '''SELECT shards, storage_size FROM shard_stats''')
-    return cursor.fetchall()
-
-
-def truncate_stats_db(stats_db_fixture: sqlite3.Connection):
-    cursor = stats_db_fixture.cursor()
-    cursor.execute('''DELETE FROM timing_stats''')
-    cursor.execute('''DELETE FROM shard_stats''')
     return cursor.fetchall()

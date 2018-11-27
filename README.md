@@ -1,76 +1,49 @@
 # xqa-perf [![Build Status](https://travis-ci.org/jameshnsears/xqa-perf.svg?branch=master)](https://travis-ci.org/jameshnsears/xqa-perf) 
-* environment construction / end to end performance metrics.
-* a .travis.yml shows a simple end to end test, using containers build from source.
+* end to end integration tests, with Matplotlib graphs.
 
-## 1. Introduction
-xqa-perf is composed of two parts:
-* a set of stand alone **bash Scripts** - [bin](bin) that provision / publish the containers.
-* a python **Unit Test** - [test/xqa/perf_test.py](test/xqa/perf_test.py) - that produces Matplotlib graphs showing end to end performance using the [xqa-test-data](https://github.com/jameshnsears/xqa-test-data).
+TODO 
+- https://blog.jetbrains.com/pycharm/2018/08/pycharm-2018-2-and-pytest-fixtures/
+    - pytest.mark.parametrize
 
-The bash scripts are also used by the unit test for environment setup / teardown.
+## 1. Test Results
+* Ubuntu 18.04
+### 1.1. Dell
+* Memory: 7.7 GiB
+* Processor: Intel® Core™ i5-3340M CPU @ 2.70GHz × 4
+* Disk: 2.5" SSD
 
-## 2. Bash Scripts
-* Run [bin/e2e.sh](bin/e2e.sh) to build a local environment built from GitHub source clones.
+| CPU Cores | Ingest threads | Shards | Timing statistics | XML file distribution |
+| ------------- | ------------- | ------------- | ------------- |
+| 4 | 1 | 1 | ![4-1_1-timing_stats](graphs/4-1_1-timing_stats.png) | ![4-1_1-file_distribution](graphs/4-1_1-file_distribution.png) |
+| 4 | 1 | 2 | | |
+| 4 | 1 | 4 | | |
+| 4 | 2 | 1 | | |
+| 4 | 2 | 2 | | |
+| 4 | 2 | 4 | | |
+| 4 | 4 | 1 | | |
+| 4 | 4 | 2 | | |
+| 4 | 4 | 4 | | |
 
-## 3. Unit Test
-The unit test involves the setup and teardown of containers - the maximum # of shards based on the CPU count of the host.
+### 1.2. MSI
+* Memory: 15.6 GiB
+* Processor: Intel® Core™ i7-5700HQ CPU @ 2.70GHz × 8 
+* Disk: M.2 SSD
 
-Each setup / teardown uses a different # of ingest-balancer threads as well as # of shards.
-
-The unit test is long running and very CPU intensive.
-
-Throughout the test statistics are kept and, at various intervals, graphs are output into the [e2e_results](e2e_results) folder.
-
-### 3.1. Usage
-Assuming:
-* [Build Prerequisites](https://github.com/jameshnsears/xqa-documentation/blob/master/BUILD-PREREQUISITES.md) are met.
-* [requirements.txt](requirements.txt) installed
-* [bin/build.sh](bin/build.sh) run
-* xqa-test-data cloned.
-
-```
-export DEVPATH=$HOME/GIT_REPOS
-export PYTHONPATH=$DEVPATH/xqa-perf/src:$DEVPATH/xqa-perf/test:$PYTHONPATH
-export PATH=$DEVPATH/xqa-perf/bin:$PATH
-cd $DEVPATH/xqa-perf
-pytest -s &> ~/Desktop/xqa-perf.log &
-tail -f ~/Desktop/xqa-perf.log
-```
-
-## 4. Test Results
-* Ubuntu 18.04 VM, running on a SSD.
-* Host + Guest OS's in an idle state.
-
-### 4.1. 5GB RAM; 2 logical cores
-
-#### A. 1 ingest thread; 1 to 2 shards
-| System Timing Stats | Shard Item Distribution |
-| ------------- | ------------- |
-| ![1_2-timing_stats](e2e_results/1_2-timing_stats.png?raw=true) | ![1_2-shard_stats](e2e_results/1_2-shard_stats.png)  |
-
-#### B. 2 ingest threads; 1 to 2 shards
-| System Timing Stats | Shard Item Distribution |
-| ------------- | ------------- |
-| ![2_2-timing_stats](e2e_results/2_2-timing_stats.png) | ![2_2-shard_stats](e2e_results/2_2-shard_stats.png)  |
-
-### 4.2. 8GB RAM; 4 logical cores
-
-#### A. 1 ingest thread; 1 to 4 shards
-| System Timing Stats | Shard Item Distribution |
-| ------------- | ------------- |
-| ![1_4-timing_stats](e2e_results/1_4-timing_stats.png) | ![1_4-shard_stats](e2e_results/1_4-shard_stats.png)  |
-
-#### B. 2 ingest threads; 1 to 4 shards
-| System Timing Stats | Shard Item Distribution |
-| ------------- | ------------- |
-| ![2_4-timing_stats](e2e_results/2_4-timing_stats.png) | ![2_4-shard_stats](e2e_results/2_4-shard_stats.png)  |
-
-#### C. 3 ingest threads; 1 to 4 shards
-| System Timing Stats | Shard Item Distribution |
-| ------------- | ------------- |
-| ![3_4-timing_stats](e2e_results/3_4-timing_stats.png) | ![3_4-shard_stats](e2e_results/3_4-shard_stats.png)  |
-
-#### D. 4 ingest threads; 1 to 4 shards
-| System Timing Stats | Shard Item Distribution |
-| ------------- | ------------- |
-| ![4_4-timing_stats](e2e_results/4_4-timing_stats.png) | ![_-shard_stats](e2e_results/4_4-shard_stats.png)  |
+| CPU Cores | Ingest threads | Shards | Timing statistics | XML file distribution |
+| ------------- | ------------- | ------------- | ------------- |
+| 8 | | 1 | | | |
+| 8 | 1 | 2 | | |
+| 8 | 1 | 4 | | |
+| 8 | 1 | 8 | | |
+| 8 | 2 | 1 | | |
+| 8 | 2 | 2 | | |
+| 8 | 2 | 4 | | |
+| 8 | 2 | 8 | | |
+| 8 | 4 | 1 | | |
+| 8 | 4 | 2 | | |
+| 8 | 4 | 4 | | |
+| 8 | 4 | 8 | | |
+| 8 | 8 | 1 | | |
+| 8 | 8 | 2 | | |
+| 8 | 8 | 4 | | |
+| 8 | 8 | 8 | | |

@@ -23,7 +23,7 @@ class LineChart(Chart):
         shard = []
 
         for row in self._source_data:
-            logging.info(row)
+            logging.debug(row)
             self._pool_size = row[0]
             number_of_shards.append(row[1])
             self._ingest_count = row[2]

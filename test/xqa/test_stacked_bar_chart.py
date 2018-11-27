@@ -37,5 +37,5 @@ def test_stacked_bar_chart(tmpdir):
     atual_image = path.abspath(path.join(tmpdir.strpath, 'expected_stacked_bar_chart.png'))
     stacked_bar_chart.write(atual_image)
     assert open(atual_image, 'rb').read() == open(
-        path.abspath(path.join(path.dirname(__file__), '../../../resources/png/expected_stacked_bar_chart.png')),
+        path.abspath(path.join(path.dirname(__file__), '../resources/png/expected_stacked_bar_chart.png')),
         'rb').read()

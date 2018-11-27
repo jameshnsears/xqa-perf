@@ -1,11 +1,15 @@
 import logging
 import sys
 
-storage_host = '0.0.0.0'
-storage_user = 'xqa'
-storage_password = 'xqa'
-storage_database_name = 'xqa'
+sqlite_host = '0.0.0.0'
+sqlite_user = 'xqa'
+sqlite_password = 'xqa'
+sqlite_name = 'xqa'
 
 logging.basicConfig(stream=sys.stdout,
-                    level=logging.INFO,
-                    format="%(asctime)s  %(levelname)8s --- [%(threadName)20s]: %(funcName)25s, %(lineno)3s: %(message)s")
+                    level=logging.DEBUG,
+                    format="%(asctime)s.%(msecs)03d  %(levelname)8s --- [%(process)5d] %(filename)25s:%(funcName)30s, %(lineno)3s: %(message)s")
+
+logging.getLogger('docker').setLevel(logging.WARNING)
+logging.getLogger('urllib3').setLevel(logging.WARNING)
+logging.getLogger('matplotlib').setLevel(logging.WARNING)

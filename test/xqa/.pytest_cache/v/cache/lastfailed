@@ -1,4 +1,0 @@
-{
-  "perf_test.py::test_perf_single_env_values": true,
-  "perf_test.py::test_png_produced_for_shard_stats": true
-}

@@ -2,42 +2,41 @@
 
 source common.sh
 
-function reset_docker_env() {
+export BLD_DIR=/tmp/xqa
+export HOME_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+function clone_git_repo() {
     echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-    NOW=`date --rfc-3339='ns'`
-    echo ">>> $NOW reset_docker_env"
-    docker stop $(docker ps -a -q) > /dev/null 2>&1
-    docker rm $(docker ps -a -q) > /dev/null 2>&1
-    docker volume prune -f > /dev/null 2>&1
-    docker network prune -f > /dev/null 2>&1
-    docker images -q | xargs docker rmi -f . > /dev/null 2>&1
+    if [ -d "$BLD_DIR/$1" ]; then
+        rm -rf ${BLD_DIR}/$1
+    fi
+    mkdir ${BLD_DIR}
+    echo ">>> $(date --rfc-3339='ns') clone_git_repo"
+    git clone https://github.com/jameshnsears/$1 ${BLD_DIR}/$1
 }
 
 function docker_compose_build() {
     echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-    NOW=`date --rfc-3339='ns'`
-    echo ">>> $NOW docker_compose_build $1"
+    echo ">>> $(date --rfc-3339='ns') docker_compose_build $1"
     clone_git_repo $1
     cd ${BLD_DIR}/$1
-    docker-compose -p ${DOCKER_ENV} build
+    docker-compose build
     cd ${HOME_DIR}
 }
 
 function mvn_docker_compose_build() {
     echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-    NOW=`date --rfc-3339='ns'`
-    echo ">>> $NOW mvn_docker_compose_build $1"
+    echo ">>> $(date --rfc-3339='ns') mvn_docker_compose_build $1"
     clone_git_repo $1
     cd ${BLD_DIR}/$1
     mvn clean compile package -DskipTests
-    docker-compose -p ${DOCKER_ENV} build
+    docker-compose build
     cd ${HOME_DIR}
 }
 
 function angular() {
     echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-    NOW=`date --rfc-3339='ns'`
-    echo ">>> $NOW ng $1"
+    echo ">>> $(date --rfc-3339='ns') ng $1"
     clone_git_repo $1
     cd ${BLD_DIR}/xqa-query-ui
     npm install
@@ -46,29 +45,24 @@ function angular() {
     npm install @angular/animations --save
     npm install font-awesome --save
     ng build --prod --build-optimizer
-    docker-compose -p ${DOCKER_ENV} build
+    docker-compose build
     cd ${HOME_DIR}
 }
 
 function cadvisor() {
     echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-    NOW=`date --rfc-3339='ns'`
-    echo ">>> $NOW cadvisor"
+    echo ">>> $(date --rfc-3339='ns') cadvisor"
     docker pull google/cadvisor:latest
 }
 
-if [[ -z "${TRAVISCI}" ]]; then
-    reset_docker_env
-    angular xqa-query-ui
-    mvn_docker_compose_build xqa-query-balancer
-fi
-
+angular xqa-query-ui
 cadvisor
 docker_compose_build xqa-db
 docker_compose_build xqa-db-amqp
-mvn_docker_compose_build xqa-ingest
-mvn_docker_compose_build xqa-ingest-balancer
 docker_compose_build xqa-message-broker
 docker_compose_build xqa-shard
+mvn_docker_compose_build xqa-ingest
+mvn_docker_compose_build xqa-ingest-balancer
+mvn_docker_compose_build xqa-query-balancer
 
-exit $?
+docker images
