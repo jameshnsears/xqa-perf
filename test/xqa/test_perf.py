@@ -27,9 +27,15 @@ def dockerpy():
          'command': ['-message_broker_host', 'xqa-message-broker'],
          'network': 'xqa'},
 
+        {'image': 'jameshnsears/xqa-shard:latest',
+         'name': 'xqa-shard-02',
+         'ports': {'1983/tcp': None},
+         'command': ['-message_broker_host', 'xqa-message-broker'],
+         'network': 'xqa'},
+
         {'image': 'jameshnsears/xqa-ingest-balancer:latest',
          'name': 'xqa-ingest-balancer',
-         'command': ["-message_broker_host", "xqa-message-broker", "-pool_size", '1'],
+         'command': ["-message_broker_host", "xqa-message-broker", "-pool_size", '2'],
          'network': 'xqa'},
 
         {'image': 'jameshnsears/xqa-db-amqp:latest',
@@ -51,10 +57,7 @@ stats_db = create_stats_db()
 
 
 @pytest.mark.timeout(320)
-def test_1_ingest_thread_and_1_shard(dockerpy, pool_size=1, shards=1):
+def test_2_ingest_threads_and_2_shards(dockerpy):
     wait_for_e2e_ingest_to_complete()
-    save_values_for_graphs(stats_db, pool_size, shards)
-
-
-def test_create_graphs():
-    create_graphs(stats_db, 1)
+    save_values_for_graphs(stats_db, 2, 2)
+    create_graphs(stats_db, 2)
