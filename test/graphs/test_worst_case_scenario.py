@@ -1,6 +1,6 @@
 import pytest
 
-from stats.common import one_shard
+from graphs.common import one_shard
 from xqa.perf import wait_for_e2e_ingest_to_complete
 from xqa.testing_support.chart import save_values_for_graphs, create_graphs
 from xqa.testing_support.database import create_stats_db
@@ -13,7 +13,7 @@ ingest_balancer = [
      'command': ['-message_broker_host', 'xqa-message-broker',
                  '-pool_size', '%s' % INGEST_THREADS,
                  '-insert_thread_wait', '1000',
-                 '-insert_thread_secondary_wait', '1000'],
+                 '-insert_thread_secondary_wait', '2000'],
      'network': 'xqa'},
 ]
 

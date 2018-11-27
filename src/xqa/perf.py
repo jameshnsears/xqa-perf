@@ -44,13 +44,23 @@ def _wait_for_service_to_complete(stage: str, test_data_items: int = 40):
 
 
 def _query_db_for_count(sql: str) -> int:
-    connection = psycopg2.connect("dbname='%s' user='%s' host='%s' password='%s'" %
-                                  (configuration.sqlite_name,
-                                   configuration.sqlite_user,
-                                   configuration.sqlite_host,
-                                   configuration.sqlite_password))
-    cursor = connection.cursor()
-    cursor.execute(sql)
+    retry_attempts = 5
+    connected = False
+    while connected is False:
+        try:
+            connection = psycopg2.connect("dbname='%s' user='%s' host='%s' password='%s'" %
+                                          (configuration.sqlite_name,
+                                           configuration.sqlite_user,
+                                           configuration.sqlite_host,
+                                           configuration.sqlite_password))
+            cursor = connection.cursor()
+            cursor.execute(sql)
+            connected = True
+
+        except psycopg2.OperationalError:
+            if retry_attempts == 0:
+                raise
+            retry_attempts -= 1
     return cursor.fetchall()[0][0]
 
 

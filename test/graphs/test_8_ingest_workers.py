@@ -1,12 +1,12 @@
 import pytest
 
-from stats.common import one_shard, two_shards, three_shards, four_shards, five_shards, six_shards, seven_shards, \
+from graphs.common import one_shard, two_shards, three_shards, four_shards, five_shards, six_shards, seven_shards, \
     eight_shards
 from xqa.perf import wait_for_e2e_ingest_to_complete
 from xqa.testing_support.chart import save_values_for_graphs, create_graphs
 from xqa.testing_support.database import create_stats_db
 
-INGEST_THREADS = 2
+INGEST_THREADS = 8
 
 ingest_balancer = [
     {'image': 'xqa-ingest-balancer:latest',
