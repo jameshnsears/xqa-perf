@@ -12,21 +12,18 @@ from .database import save_timing_stats, save_file_distribution
 
 
 def create_graphs(stats_db: sqlite3.Connection,
-                  pool_size: int = 1,
-                  max_shards: int = 1):
+                  pool_size: int = 1):
     make_png_timing_stats(retrieve_timing_stats(stats_db),
                           path.abspath(path.join(path.dirname(__file__),
-                                                 '../../../graphs/%s-%s_%s-timing_stats.png' % (
+                                                 '../../../graphs/%s-%s-timing_stats.png' % (
                                                      multiprocessing.cpu_count(),
-                                                     pool_size,
-                                                     max_shards))))
+                                                     pool_size))))
 
     make_png_file_distribution(retrieve_file_distribution(stats_db),
                                path.abspath(path.join(path.dirname(__file__),
-                                                      '../../../graphs/%s-%s_%s-file_distribution.png' % (
+                                                      '../../../graphs/%s-%s-file_distribution.png' % (
                                                           multiprocessing.cpu_count(),
-                                                          pool_size,
-                                                          max_shards))))
+                                                          pool_size))))
 
 
 def make_png_file_distribution(shard_stats: List, location_to_save_chart: str):
