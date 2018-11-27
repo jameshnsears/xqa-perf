@@ -60,7 +60,6 @@ def dockerpy():
 stats_db = create_stats_db()
 
 
-@pytest.mark.timeout(320)
 def test_2_shards_2_clients(dockerpy):
     wait_for_e2e_ingest_to_complete()
     save_values_for_graphs(stats_db, INGEST_THREADS, 2)

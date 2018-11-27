@@ -15,7 +15,7 @@ ingest_balancer = [
      'command': ['-message_broker_host', 'xqa-message-broker',
                  '-pool_size', '%s' % INGEST_THREADS,
                  '-insert_thread_wait', '1000',
-                 '-insert_thread_secondary_wait', '60000'],
+                 '-insert_thread_secondary_wait', '1000'],
      'network': 'xqa'},
 ]
 
@@ -30,7 +30,6 @@ stats_db = create_stats_db()
 os.environ["PYTEST_DOCKER_PY_KEEP_LOGS"] = "1"
 
 
-@pytest.mark.timeout(320)
 def test_1_shards_1_client1(dockerpy_1_shard):
     wait_for_e2e_ingest_to_complete()
     save_values_for_graphs(stats_db, INGEST_THREADS, 1)

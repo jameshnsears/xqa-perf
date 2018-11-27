@@ -59,49 +59,41 @@ def dockerpy_8_shards():
 stats_db = create_stats_db()
 
 
-@pytest.mark.timeout(320)
 def test_1_shard(dockerpy_1_shard):
     wait_for_e2e_ingest_to_complete()
     save_values_for_graphs(stats_db, INGEST_THREADS, 1)
 
 
-@pytest.mark.timeout(320)
 def test_2_shards(dockerpy_2_shards):
     wait_for_e2e_ingest_to_complete()
     save_values_for_graphs(stats_db, INGEST_THREADS, 2)
 
 
-@pytest.mark.timeout(320)
 def test_3_shards(dockerpy_3_shards):
     wait_for_e2e_ingest_to_complete()
     save_values_for_graphs(stats_db, INGEST_THREADS, 3)
 
 
-@pytest.mark.timeout(320)
 def test_4_shards(dockerpy_4_shards):
     wait_for_e2e_ingest_to_complete()
     save_values_for_graphs(stats_db, INGEST_THREADS, 4)
 
 
-@pytest.mark.timeout(320)
 def test_5_shards(dockerpy_5_shards):
     wait_for_e2e_ingest_to_complete()
     save_values_for_graphs(stats_db, INGEST_THREADS, 5)
 
 
-@pytest.mark.timeout(320)
 def test_6_shards(dockerpy_6_shards):
     wait_for_e2e_ingest_to_complete()
     save_values_for_graphs(stats_db, INGEST_THREADS, 6)
 
 
-@pytest.mark.timeout(320)
 def test_7_shards(dockerpy_7_shards):
     wait_for_e2e_ingest_to_complete()
     save_values_for_graphs(stats_db, INGEST_THREADS, 7)
 
 
-@pytest.mark.timeout(320)
 def test_8_shards(dockerpy_8_shards):
     wait_for_e2e_ingest_to_complete()
     save_values_for_graphs(stats_db, INGEST_THREADS, 8)
