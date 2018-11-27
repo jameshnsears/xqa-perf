@@ -54,4 +54,7 @@ stats_db = create_stats_db()
 def test_1_ingest_thread_and_1_shard(dockerpy, pool_size=1, shards=1):
     wait_for_e2e_ingest_to_complete()
     save_values_for_graphs(stats_db, pool_size, shards)
-    create_graphs(stats_db, pool_size)
+
+
+def test_create_graphs():
+    create_graphs(stats_db, 1)

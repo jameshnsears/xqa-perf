@@ -96,4 +96,4 @@ def test_4_shards(dockerpy_4_shards):
 
 
 def test_create_graphs():
-    create_graphs(stats_db, INGEST_THREADS, 4)
+    create_graphs(stats_db, INGEST_THREADS)
