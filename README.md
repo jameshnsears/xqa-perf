@@ -8,7 +8,7 @@ To get the best scalability & performance improvements the following is importan
 * the # of clients
     * the size of thread_pool in xqa-ingest-balancer
 * how long each client waits for a response from the xqa-message-broker:
-    * the duration of insert_thread_wait and insert_thread_secondary_wait in xqa-ingest-balancer
+    * the duration of insert_thread_secondary_wait in xqa-ingest-balancer
 
 Two thing's are also important:
 
