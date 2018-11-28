@@ -14,7 +14,6 @@ class UnableToDetermineFinishState(Exception):
 
 def wait_for_e2e_ingest_to_complete():
     _wait_for_service_to_complete('ingest')
-    _wait_for_service_to_complete('ingestbalancer')
     _wait_for_service_to_complete('shard')
 
 

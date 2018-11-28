@@ -12,8 +12,8 @@ ingest_balancer = [
      'name': 'xqa-ingest-balancer',
      'command': ['-message_broker_host', 'xqa-message-broker',
                  '-pool_size', '%s' % INGEST_THREADS,
-                 '-insert_thread_wait', '1000',
-                 '-insert_thread_secondary_wait', '2000'],
+                 '-insert_thread_wait', '60000',
+                 '-insert_thread_secondary_wait', '1000'],
      'network': 'xqa'},
 ]
 
