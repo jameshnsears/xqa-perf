@@ -39,7 +39,8 @@ before_script:
 
 script:
   - export PYTHONPATH=src:test:$PYTHONPATH
-  - pytest -s --cov-report term-missing --cov . test/xqa
+  - pytest -s --junitxml=junitxml.xml --cov-report term-missing --cov . test/xqa
+  - coverage xml -i
 
 after_success:
   - COVERALLS_REPO_TOKEN=Fg2XQENdHXeMRIExx5aCU1V7Ntl1t456M coveralls
