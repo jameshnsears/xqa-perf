@@ -49,5 +49,3 @@ after_success:
 after_failure:
   - docker images
   - docker ps -a
-  - docker logs xqa-ingest
-  - docker logs xqa-ingest-broker

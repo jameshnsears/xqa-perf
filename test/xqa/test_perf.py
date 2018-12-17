@@ -1,3 +1,4 @@
+import time
 from os import path
 
 import pytest
@@ -61,6 +62,9 @@ stats_db = create_stats_db()
 
 
 def test_2_shards_2_clients(dockerpy):
+    # give travis time to start all the containers
+    time.sleep(60)
+
     wait_for_e2e_ingest_to_complete()
     save_values_for_graphs(stats_db, INGEST_THREADS, 2)
     create_graphs(stats_db, INGEST_THREADS)
