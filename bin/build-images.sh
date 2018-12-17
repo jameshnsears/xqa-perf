@@ -55,6 +55,8 @@ function cadvisor() {
     docker pull google/cadvisor:latest
 }
 
+reset_docker_env
+
 angular xqa-query-ui
 cadvisor
 docker_compose_build xqa-db
