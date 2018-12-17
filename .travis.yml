@@ -45,3 +45,9 @@ script:
 after_success:
   - COVERALLS_REPO_TOKEN=Fg2XQENdHXeMRIExx5aCU1V7Ntl1t456M coveralls
   - sonar-scanner
+
+after_failure:
+  - docker images
+  - docker ps -a
+  - docker logs xqa-ingest
+  - docker logs xqa-ingest-broker
