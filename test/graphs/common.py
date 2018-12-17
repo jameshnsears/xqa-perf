@@ -15,28 +15,28 @@ one_shard = [
          '/dev/disk': {'bind': '/dev/disk', 'mode': 'ro'}},
      },
 
-    {'image': 'xqa-message-broker:latest',
+    {'image': 'jameshnsears/xqa-message-broker:latest',
      'name': 'xqa-message-broker',
      'ports': {'5672/tcp': 5672, '8161/tcp': 8161},
      'network': 'xqa'},
 
-    {'image': 'xqa-db:latest',
+    {'image': 'jameshnsears/xqa-db:latest',
      'name': 'xqa-db',
      'ports': {'5432/tcp': 5432},
      'network': 'xqa'},
 
-    {'image': 'xqa-shard:latest',
+    {'image': 'jameshnsears/xqa-shard:latest',
      'name': 'xqa-shard-01',
      'ports': {'1984/tcp': None},
      'command': ['-message_broker_host', 'xqa-message-broker'],
      'network': 'xqa'},
 
-    {'image': 'xqa-db-amqp:latest',
+    {'image': 'jameshnsears/xqa-db-amqp:latest',
      'name': 'xqa-db-amqp',
      'command': ['-message_broker_host', 'xqa-message-broker', '-storage_host', 'xqa-db', '-storage_port', '5432'],
      'network': 'xqa'},
 
-    {'image': 'xqa-ingest:latest',
+    {'image': 'jameshnsears/xqa-ingest:latest',
      'name': 'xqa-ingest',
      'command': ['-message_broker_host', 'xqa-message-broker', '-path', '/xml'],
      'volumes': {
@@ -46,7 +46,7 @@ one_shard = [
 ]
 
 two_shards = one_shard + [
-    {'image': 'xqa-shard:latest',
+    {'image': 'jameshnsears/xqa-shard:latest',
      'name': 'xqa-shard-02',
      'ports': {'1984/tcp': None},
      'command': ['-message_broker_host', 'xqa-message-broker'],
@@ -54,7 +54,7 @@ two_shards = one_shard + [
 ]
 
 three_shards = two_shards + [
-    {'image': 'xqa-shard:latest',
+    {'image': 'jameshnsears/xqa-shard:latest',
      'name': 'xqa-shard-03',
      'ports': {'1984/tcp': None},
      'command': ['-message_broker_host', 'xqa-message-broker'],
@@ -62,7 +62,7 @@ three_shards = two_shards + [
 ]
 
 four_shards = three_shards + [
-    {'image': 'xqa-shard:latest',
+    {'image': 'jameshnsears/xqa-shard:latest',
      'name': 'xqa-shard-04',
      'ports': {'1984/tcp': None},
      'command': ['-message_broker_host', 'xqa-message-broker'],
@@ -70,7 +70,7 @@ four_shards = three_shards + [
 ]
 
 five_shards = four_shards + [
-    {'image': 'xqa-shard:latest',
+    {'image': 'jameshnsears/xqa-shard:latest',
      'name': 'xqa-shard-05',
      'ports': {'1984/tcp': None},
      'command': ['-message_broker_host', 'xqa-message-broker'],
@@ -78,7 +78,7 @@ five_shards = four_shards + [
 ]
 
 six_shards = five_shards + [
-    {'image': 'xqa-shard:latest',
+    {'image': 'jameshnsears/xqa-shard:latest',
      'name': 'xqa-shard-06',
      'ports': {'1984/tcp': None},
      'command': ['-message_broker_host', 'xqa-message-broker'],
@@ -86,7 +86,7 @@ six_shards = five_shards + [
 ]
 
 seven_shards = six_shards + [
-    {'image': 'xqa-shard:latest',
+    {'image': 'jameshnsears/xqa-shard:latest',
      'name': 'xqa-shard-07',
      'ports': {'1984/tcp': None},
      'command': ['-message_broker_host', 'xqa-message-broker'],
@@ -94,7 +94,7 @@ seven_shards = six_shards + [
 ]
 
 eight_shards = seven_shards + [
-    {'image': 'xqa-shard:latest',
+    {'image': 'jameshnsears/xqa-shard:latest',
      'name': 'xqa-shard-08',
      'ports': {'1984/tcp': None},
      'command': ['-message_broker_host', 'xqa-message-broker'],
