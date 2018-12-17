@@ -4,17 +4,11 @@
 ## 1. Test Results
 To get the best scalability & performance improvements the following is important:
 * the # of BaseX engines
-    * the xqa-shard's
+    * the xqa-shard's.
 * the # of clients
-    * the size of thread_pool in xqa-ingest-balancer
+    * the size of thread_pool in xqa-ingest-balancer.
 * how long each client waits for a response from the xqa-message-broker:
-    * the duration of insert_thread_secondary_wait in xqa-ingest-balancer
-
-Two thing's are also important:
-
-
-### 1.1. Worst Case Scenario
-The worst case scenario, 1 ingest thread and 1 shar, isn't too shabby 
+    * the duration of insert_thread_secondary_wait in xqa-ingest-balancer.
 
 ### 1.1. Test # 1 - Dell Laptop
 * Ubuntu 18.04
