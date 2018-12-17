@@ -3,13 +3,23 @@ sudo: required
 notifications:
 email: james.hn.sears@gmail.com
 
+addons:
+  sonarcloud:
+    organization: "jameshnsears-github"
+    token:
+      secure: "HqVVwA1c7ZCK3WMkBv03e0iYeHqsEBMmqn0xSp62PVSrRoEOJpWi5mT+hVa9hs9Ccz+VlaJpHrNsSGCD+p41GvwZg5ZPauCTgrctL3LGTVoCFSd8FQboTAQyWyBusTzDDJLqQsVwCxbU964o0QdIWWea5ZiNwI8cPVXyB/EQzXQzFoAo8rAbs2iq+xHiOOWY5XR9FGa9GcgbDnO1ufq7b+nX6NQ7W6Zcx7HlgMbvadeGa4VMC5+6Uilym4QG6bLdiyiAhlGtCzFrCZKXxG76pXSb973c9A631XIH/gUnF0RUj0l3//Th5Gu2+xRptK9PaTsBFR5oZ1aeFHWMgnEXLye4aGPdsqzJ8XNGiYay3sVtKHQ9DWVg7cQ0E8jPLZ9PdyhpsKS80ysFK5zGKh3UYUsbIWyyR5kTeF9PGscv7Y7k7qtPTeSfyeN4ig0yqGWQvUWuYO8n6nX4rJ2dV2gmQLjS7CFQHOvEd4GXPiS0ywwXPLZhULs0Bx0PTqS0i7C9i6UxacLo1nGBr8uhotCNij1lgTEEJ0eAHin4HRyPJZJT0aqPUR9T4K7EPGzGetbjAiJ9xtGSV+ZkC000TPKKtbwthr/NRbbuKhNUOwy/mKHZf1wVNA1br+T6TE0YywiWp7Tk7ohN+aA42CedBoYCzCkejGjDTp0O12h0Mma9J94="
+
 services:
-- docker
+  - docker
+
+cache:
+  directories:
+  - $HOME/.sonar/cache
 
 language: python
 
 python:
-- "3.6"
+  - "3.6"
 
 before_script:
   - sudo service postgresql stop
@@ -18,6 +28,7 @@ before_script:
   - pip install --upgrade pip
   - pip install -r requirements.txt
   - flake8 src test
+  - pylint --rcfile=setup.cfg src test -r n > pylint-report.txt 2>&1 || true
 
   - cd bin
   - ./pull.sh
@@ -32,3 +43,4 @@ script:
 
 after_success:
   - COVERALLS_REPO_TOKEN=Fg2XQENdHXeMRIExx5aCU1V7Ntl1t456M coveralls
+  - sonar-scanner

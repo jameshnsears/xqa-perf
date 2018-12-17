@@ -1,4 +1,4 @@
-# xqa-perf [![Build Status](https://travis-ci.org/jameshnsears/xqa-perf.svg?branch=master)](https://travis-ci.org/jameshnsears/xqa-perf) 
+# xqa-perf [![Build Status](https://travis-ci.org/jameshnsears/xqa-perf.svg?branch=master)](https://travis-ci.org/jameshnsears/xqa-perf) [![Coverage Status](https://coveralls.io/repos/github/jameshnsears/xqa-perf/badge.svg?branch=master)](https://coveralls.io/github/jameshnsears/xqa-perf?branch=master) [![sonarcloud](https://sonarcloud.io/api/project_badges/measure?project=jameshnsears_xqa-perf&metric=alert_status)](https://sonarcloud.io/api/project_badges/measure?project=jameshnsears_xqa-perf&metric=alert_status) 
 * end to end integration tests, with Matplotlib graphs.
 
 ## 1. Test Results
