@@ -27,7 +27,7 @@ class StackedBarChart(Chart):
         matrix = self.transform_source_data_into_a_matrix()
         logging.debug(matrix)
 
-        for i, c in enumerate(matrix):
+        for i, _ in enumerate(matrix):
             if i == 0:
                 plt.bar(np.arange(self._matrix_size()), matrix[0], 0.5)
             else:
