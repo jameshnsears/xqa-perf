@@ -7,6 +7,8 @@ env:
   global:
     # travis encrypt COVERALLS_REPO_TOKEN=...
     - secure: "u/ukkuWPOGb+J1tkKGDbpV2YlJiiUFJy5NC+BUju/c2DZUtmfWn4poALq3PJbvin9CtGL/W0HEsK1ysMhh6gw91S6cYEhHTCiW0cUZgqv5MJOqkd5YGQPbeT2t3RnTjEiwSHfbcsds0nUETwBOsYvT6FSqpcqt0f/FsRyYpmwr/jJnVA7RkkFylY10uSVrhoCbm9UToYgQIAgfFx21lLRWvHnP4zagEYyhqJobd1j1cL9raJA08wKkC5SUFL5Lb3ONTxFQuRTKAMnucRRjlMYl1fJDSjQ1OhUcYep51A6GOt0KmReW79l1ecLdfQL+gq6T+Lm0hBXMLzfaLNxCDw93PjnX8EqFpxRmZtx+BcFyTdiratWS8zSa7E9zXGDkpE2yN1ehkFItDhgnpjcx5iekl7H3fYXK9L9pU9EshwfsM/SaBOYecUTQTgka4kFpgaAOUADGjmnMd2y7lXES7+dhHOYA6llUEkKBdrlSmrhJ3uF8J0vzmmCbNFJEkSY/Y+k7y9S3pDbsb0xLyYApzGX7P84EZ9BmTaj6MzrnR+xwW0ikOdX8d96wZr5TGrRgrn8CFVUfUSuH0Ublvmb2Vwz2CihcccUhuk3Eh5+KXI5iW8o4grIVdB5HXawobpWuEDCMvmomc4EpDxi4mhVWEE/Gf/mwoYZnk9D0dkMFE1gz0="
+    # travis encrypt CODACY_PROJECT_TOKEN=...
+    - secure: "rymkA2GLY0o8I4K7vSRdYieNRWIo2Dksy2YbCm/vPhjoBjdiClpRsMtHTky55HFR/vy/Y/FtRRCJok38DvxBL/YMlOPnjz/RedG3wDVWa0JqhNJrgOP6HQ+Ig4RAAOSso3HCLZFl7V20dVSrV9+2KPt3Tl8Hz4kpE8BMpFmlZNYn1jOI8Y/SdHQR8VJ1U1q4GKDIs/ZtsJ4hgt5wExdnkW3xKElcPdqJTdpz6k9RnR+40ACy4x+wQ8oD5m4W+YxWhznZ3RVJaalAy6C212rHVQhzkb9ef/SN5dxrMfVjPkwtaNL9v76oiNsUm43TPOfWJJsHKS46308KHb5aO2Q/9WRGYbOZhlhzOwbOaixx5XFz3EZox/n9voBJ0IsfiAkO6/0a+Jv9gIIq7gFb/YbA2MuWVa+yKW1LZOGtBUDl2JuitBVKegqanmXPf8O9A2gnv7krXLA1fZHmhCP73qxoMmPV/jAflK8ZrPWYyk4CjEUJ49beAnmlvO1CYfrarPVVORHz3nV/+yTvhX1gD3Qxforr/9cxOfhG2qqcGxIAoVIOy5coggrKR4iXKjmgbzguMqvKk9tlqWIUN5xepBAhgJxAbZ/mKC8Ox8wc2ghD5vD+A9GINWuorsqqB73r8vOe8GuBWfBWvcVQ41HudNQw+aF8vyHFFt7ZjoGDjWPWSvo="
 
 addons:
   sonarcloud:
@@ -51,6 +53,7 @@ script:
   - coverage xml -i
 
 after_success:
+  - python-codacy-coverage -r coverage.xml
   - coveralls
   - sonar-scanner
 
