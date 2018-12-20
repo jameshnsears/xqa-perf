@@ -2,10 +2,12 @@
 * end to end integration tests, with Matplotlib graphs.
 
 ## 1. Test Results
-To get the best scalability & performance the following is important:
-* limiting the maximum # of clients (represented by thread_pool in xqa-ingest-balancer) and BaseX engines (xqa-shard's) to the # of host CPU cores.
-* how long each client waits for a response from the xqa-message-broker:
-    * the duration of insert_thread_secondary_wait in xqa-ingest-balancer.
+XQA allows you to easily experiment with it's operating parameters:
+* the # of BaseX engines (xqa-shards).
+* the # of ingest clients (xqa-ingest-balancer's pool_size).
+* how long each ingest client waits for a xqa-shard size response  (xqa-ingest-balancer's insert_thread_wait & insert_thread_secondary_wait)
+
+In general the "best" overall scalability & performance is achieved when the # of BaseX engines and ingest client's is less than the maximum # of host CPU cores.
 
 ### 1.1. Test Data
 * Each test run used all the .xml files from [xqa-test-data](https://github.com/jameshnsears/xqa-test-data).
