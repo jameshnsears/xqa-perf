@@ -2,19 +2,19 @@
 * end to end integration tests, with Matplotlib graphs.
 
 ## 1. Test Results
-To get the best scalability & performance improvements the following is important:
-* the # of BaseX engines
-    * the xqa-shard's.
-* the # of clients
-    * the size of thread_pool in xqa-ingest-balancer.
+To get the best scalability & performance the following is important:
+* limiting the maximum # of clients (represented by thread_pool in xqa-ingest-balancer) and BaseX engines (xqa-shard's) to the # of host CPU cores.
 * how long each client waits for a response from the xqa-message-broker:
     * the duration of insert_thread_secondary_wait in xqa-ingest-balancer.
 
-### 1.1. Test # 1 - Dell Laptop
+### 1.1. Test Data
+* Each test run used all the .xml files from [xqa-test-data](https://github.com/jameshnsears/xqa-test-data).
+
+## 2. Test # 1 - Dell Laptop
 * Ubuntu 18.04
 * Memory: 7.7 GiB
 * Processor: Intel® Core™ i5-3340M CPU @ 2.70GHz × 4
-* Disk: 2.5" SSD#
+* Disk: 2.5" SSD
 
 Ingest thread(s) | Shard(s) | Timing statistics | XML file distribution |
 | ------------- | ------------- | ------------- | ------------- |
@@ -22,7 +22,7 @@ Ingest thread(s) | Shard(s) | Timing statistics | XML file distribution |
 | 2 | 1 - 4 | ![4-2-timing_stats](graphs/4-2-timing_stats.png) | ![4-2-file_distribution](graphs/4-2-file_distribution.png) |
 | 4 | 1 - 4 | ![4-4-timing_stats](graphs/4-4-timing_stats.png) | ![4-4-file_distribution](graphs/4-4-file_distribution.png) |
 
-### 1.2. Test # 1 - MSI Laptop
+## 3. Test # 2 - MSI Laptop
 * Ubuntu 18.04
 * Memory: 15.6 GiB
 * Processor: Intel® Core™ i7-5700HQ CPU @ 2.70GHz × 8 
