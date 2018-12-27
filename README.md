@@ -2,16 +2,16 @@
 * end to end integration tests, with Matplotlib graphs.
 
 ## 1. Test Results
-XQA allows you to easily experiment with it's operating parameters:
+XQA allows you to easily experiment with it's configuration:
 * the # of BaseX engines (xqa-shards).
 * the # of ingest clients (xqa-ingest-balancer's pool_size).
-* how long each ingest client waits for a xqa-shard size response  (xqa-ingest-balancer's insert_thread_wait & insert_thread_secondary_wait)
+* how long each ingest client waits for a xqa-shard size response  (xqa-ingest-balancer's insert_thread_wait & insert_thread_secondary_wait).
 
 This ability to experiment is important as it let's you tune XQA to match your requirements.
 
 In general though, the "best" overall scalability & performance is achieved when the # of BaseX engines and ingest client's is less than the maximum # of host CPU cores. 
 
-By reviewing the graphs below, from a worst case ingest using a single BaseX engine, we can achieve somewhere between a 250% to 400% improvement in performance by using XQA.
+By reviewing the graphs below, from a worst case ingest using a single BaseX engine, we can achieve somewhere between a 250% to 400% improvement in ingest by using XQA.
 
 ### 1.1. Test Data
 * Each test run used all the .xml files from [xqa-test-data](https://github.com/jameshnsears/xqa-test-data).
