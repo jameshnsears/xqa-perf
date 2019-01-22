@@ -7,10 +7,7 @@ export HOME_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 function clone_git_repo() {
     echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-    if [ -d "$BLD_DIR/$1" ]; then
-        rm -rf ${BLD_DIR}/$1
-    fi
-    mkdir ${BLD_DIR}
+    rm -rf ${BLD_DIR}/$1
     echo ">>> $(date --rfc-3339='ns') clone_git_repo"
     git clone https://github.com/jameshnsears/$1 ${BLD_DIR}/$1
 }
