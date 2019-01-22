@@ -40,11 +40,7 @@ function angular() {
     clone_git_repo $1
     cd ${BLD_DIR}/xqa-query-ui
     npm install
-    npm install -g @angular/cli
-    npm install primeng --save
-    npm install @angular/animations --save
-    npm install font-awesome --save
-    ng build --prod --build-optimizer
+    node_modules/@angular/cli/bin/ng build --prod --build-optimizer
     docker-compose build
     cd ${HOME_DIR}
 }
