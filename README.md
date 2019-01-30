@@ -16,6 +16,19 @@ By reviewing the graphs below, from a worst case ingest using a single BaseX eng
 ### 1.1. Test Data
 * Each test run used all the .xml files from [xqa-test-data](https://github.com/jameshnsears/xqa-test-data).
 
+### 1.2. Producting the graphs
+```
+cd xqa-perf
+
+./create-venv.sh
+
+source venv-xqa-perf/bin/activate 
+
+export PYTHONPATH=$PWD/src:$PWD/test:$PYTHONPATH
+
+pytest -s test/graphs/msi
+```
+
 ## 2. Test # 1 - Dell Laptop
 * Ubuntu 18.04
 * Memory: 7.7 GiB
